@@ -19,11 +19,14 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
     var audioPlayer: AVAudioPlayer!
     var numberOfRecords: Int = 0
     
+    let walkyTalkyService = Pairing()
+    
     @IBOutlet weak var recordBackColoredView: UIView!
     @IBOutlet weak var recordBtnBackView: UIView!
     @IBOutlet weak var recordButton: UIButton!
     var circleView: CircleView!
-
+    @IBOutlet weak var connectionLabel: UILabel!
+    
     let viewModel = MainViewModel()
     let disposeBag = DisposeBag()
     
@@ -31,20 +34,8 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
         super.viewDidLoad()
         setupAudio()
         setUI()
-        
-//        recordButton.rx
-//            .longPressGesture(numberOfTouchesRequired: 1,
-//                              numberOfTapsRequired: 1,
-//                              minimumPressDuration: 2.0,
-//                              allowableMovement: 15, configuration: { (gesture, delegate) in
-//                                print("pressing..")
-//                })
-//            .subscribe({ [weak self] _ in
-//                self?.recordBackColoredView.backgroundColor = UIColor.red
-//                self?.startToRecord()
-//            })
-//            .disposed(by: disposeBag)
-        
+        walkyTalkyService.delegate = self
+
         recordButton.rx
             .longPressGesture()
             .when(UIGestureRecognizer.State.began)
@@ -150,16 +141,27 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
         }
     }
 
+    private func playRecordFile() {
+        let path = directoryOfRecording().appendingPathComponent("\(numberOfRecords).m4a")
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: path)
+            audioPlayer.play()
+        } catch {
+            print("cannot play")
+        }
+    }
+}
+
+extension MainViewController: PairingDelegate {
+    func connectedDevicesChanged(manager: Pairing, connectedDevices: [String]) {
+        OperationQueue.main.addOperation {
+            self.connectionLabel.text = "\(connectedDevices)"
+        }
+    }
     
-//
-//    private func bindViewModel() {
-//        viewModel.count.asObservable()
-//            .subscribe(onNext: { [weak self] num in
-//                self?.countLabel.text = String(num)
-//            })
-//    }
-//
-//    @IBAction func tapButtonTapped(_ sender: Any) {
-//        viewModel.count.value += 1
-//    }
+    func playRecord(manager: Pairing, audioFile: AVAudioFile) {
+        OperationQueue.main.addOperation {
+            self.playRecordFile()
+        }
+    }
 }

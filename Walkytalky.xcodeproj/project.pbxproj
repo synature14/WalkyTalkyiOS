@@ -15,6 +15,7 @@
 		984CD2BD215B790900D2C417 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 984CD2BC215B790900D2C417 /* RxSwift.framework */; };
 		984CD2C0215B7E0600D2C417 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984CD2BF215B7E0600D2C417 /* MainViewModel.swift */; };
 		984CD2C2215B7EAC00D2C417 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984CD2C1215B7EAC00D2C417 /* Bindable.swift */; };
+		98A4F16B216B96A300892BBB /* Pairing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A4F16A216B96A300892BBB /* Pairing.swift */; };
 		98A7A0192167351100CDFD8D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A7A0182167351100CDFD8D /* Extensions.swift */; };
 		98A7A01C2167388100CDFD8D /* OptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A7A01B2167388100CDFD8D /* OptionViewController.swift */; };
 /* End PBXBuildFile section */
@@ -30,6 +31,7 @@
 		984CD2BC215B790900D2C417 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
 		984CD2BF215B7E0600D2C417 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		984CD2C1215B7EAC00D2C417 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
+		98A4F16A216B96A300892BBB /* Pairing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pairing.swift; sourceTree = "<group>"; };
 		98A7A0182167351100CDFD8D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		98A7A01B2167388100CDFD8D /* OptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -67,14 +69,15 @@
 			isa = PBXGroup;
 			children = (
 				98A7A0182167351100CDFD8D /* Extensions.swift */,
+				98A7A01A2167385700CDFD8D /* Option */,
 				98A7A017216724F600CDFD8D /* ViewModel */,
 				984CD2A8215B30E000D2C417 /* AppDelegate.swift */,
 				984CD2AC215B30E000D2C417 /* Main.storyboard */,
 				984CD2AA215B30E000D2C417 /* MainViewController.swift */,
+				98A4F16A216B96A300892BBB /* Pairing.swift */,
 				984CD2AF215B30E100D2C417 /* Assets.xcassets */,
 				984CD2B1215B30E100D2C417 /* LaunchScreen.storyboard */,
 				984CD2B4215B30E100D2C417 /* Info.plist */,
-				98A7A01A2167385700CDFD8D /* Option */,
 			);
 			path = Walkytalky;
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 				984CD2A9215B30E000D2C417 /* AppDelegate.swift in Sources */,
 				984CD2C2215B7EAC00D2C417 /* Bindable.swift in Sources */,
 				984CD2C0215B7E0600D2C417 /* MainViewModel.swift in Sources */,
+				98A4F16B216B96A300892BBB /* Pairing.swift in Sources */,
 				98A7A01C2167388100CDFD8D /* OptionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
