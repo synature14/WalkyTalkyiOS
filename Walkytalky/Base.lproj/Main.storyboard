@@ -73,12 +73,27 @@
                                             <constraint firstAttribute="bottom" secondItem="9Wo-P5-p68" secondAttribute="bottom" id="yJS-Ra-zvu"/>
                                         </constraints>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3We-5r-fWP">
+                                        <rect key="frame" x="20" y="50" width="335" height="52"/>
+                                        <color key="backgroundColor" red="1" green="0.57793167030000003" blue="0.58349056690000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                        <state key="normal" title="Play">
+                                            <color key="titleColor" red="0.91764705879999997" green="0.91764705879999997" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="playRecord:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pbZ-G1-NzI"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="ibF-u3-tFW" firstAttribute="bottom" secondItem="Mky-Hk-0fT" secondAttribute="bottom" constant="-20" id="H6h-Aw-vOX"/>
                                     <constraint firstItem="ibF-u3-tFW" firstAttribute="leading" secondItem="Mky-Hk-0fT" secondAttribute="leading" constant="20" id="JFa-i0-VKh"/>
+                                    <constraint firstItem="Mky-Hk-0fT" firstAttribute="top" secondItem="3We-5r-fWP" secondAttribute="bottom" constant="90" id="LwO-yZ-DQO"/>
+                                    <constraint firstItem="3We-5r-fWP" firstAttribute="leading" secondItem="Z3q-gL-0aL" secondAttribute="leading" constant="20" id="OlD-d2-hsZ"/>
+                                    <constraint firstAttribute="trailing" secondItem="3We-5r-fWP" secondAttribute="trailing" constant="20" id="Yxf-SO-lXg"/>
                                     <constraint firstItem="ibF-u3-tFW" firstAttribute="trailing" secondItem="Mky-Hk-0fT" secondAttribute="trailing" constant="-20" id="kGF-Af-aLu"/>
+                                    <constraint firstItem="3We-5r-fWP" firstAttribute="top" secondItem="Z3q-gL-0aL" secondAttribute="top" constant="50" id="lLH-7r-CLq"/>
                                     <constraint firstItem="Mky-Hk-0fT" firstAttribute="centerY" secondItem="Z3q-gL-0aL" secondAttribute="centerY" id="nVV-2i-GvU"/>
                                     <constraint firstItem="Mky-Hk-0fT" firstAttribute="centerX" secondItem="Z3q-gL-0aL" secondAttribute="centerX" id="oTL-ee-1k6"/>
                                     <constraint firstItem="ibF-u3-tFW" firstAttribute="top" secondItem="Mky-Hk-0fT" secondAttribute="top" constant="20" id="wfw-ZI-gTk"/>

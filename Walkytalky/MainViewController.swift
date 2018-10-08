@@ -16,12 +16,13 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
     
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
+    var audioPlayer: AVAudioPlayer!
     var numberOfRecords: Int = 0
     
     @IBOutlet weak var recordBackColoredView: UIView!
     @IBOutlet weak var recordBtnBackView: UIView!
     @IBOutlet weak var recordButton: UIButton!
-    
+
     let viewModel = MainViewModel()
     let disposeBag = DisposeBag()
     
@@ -29,6 +30,19 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
         super.viewDidLoad()
         setupAudio()
         setUI()
+        
+//        recordButton.rx
+//            .longPressGesture(numberOfTouchesRequired: 1,
+//                              numberOfTapsRequired: 1,
+//                              minimumPressDuration: 2.0,
+//                              allowableMovement: 15, configuration: { (gesture, delegate) in
+//                                print("pressing..")
+//                })
+//            .subscribe({ [weak self] _ in
+//                self?.recordBackColoredView.backgroundColor = UIColor.red
+//                self?.startToRecord()
+//            })
+//            .disposed(by: disposeBag)
         
         recordButton.rx
             .longPressGesture()
@@ -38,15 +52,16 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
                 self.startToRecord()
             })
             .disposed(by: disposeBag)
-        
+
         recordButton.rx
             .longPressGesture()
-            .when(UIGestureRecognizer.State.cancelled)
+            .when(UIGestureRecognizer.State.ended)
             .subscribe({ _ in
-                self.cancelRecord()
-                self.recordBtnBackView.backgroundColor = UIColor.white
+                self.recordBackColoredView.backgroundColor = UIColor.white
+                self.finishRecord()
             })
             .disposed(by: disposeBag)
+        
 //        bindViewModel()
     }
     
@@ -99,13 +114,24 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
         }
     }
     
-    private func cancelRecord() {
+    private func finishRecord() {
         // Stop audio recording
         audioRecorder.stop()
         audioRecorder = nil
         UserDefaults.standard.set(numberOfRecords, forKey: "myNumber")
         recordButton.setTitle("Start Recording", for: .normal)
     }
+    
+    @IBAction func playRecord(_ sender: Any) {
+        let path = directoryOfRecording().appendingPathComponent("\(numberOfRecords).m4a")
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: path)
+            audioPlayer.play()
+        } catch {
+            print("cannot play")
+        }
+    }
+
     
 //
 //    private func bindViewModel() {
@@ -119,4 +145,3 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
 //        viewModel.count.value += 1
 //    }
 }
-
