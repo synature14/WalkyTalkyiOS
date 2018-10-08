@@ -47,7 +47,7 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
         
         recordButton.rx
             .longPressGesture()
-            .when(UIGestureRecognizer.State.changed)
+            .when(UIGestureRecognizer.State.began)
             .subscribe({ _ in
                 self.addCircleView()
                 self.startToRecord()
@@ -90,7 +90,7 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
         recordBackColoredView.addSubview(circleView)
         
         // Animate the drawing of the circle over the course of 1 second
-        circleView.animateCircle(duration: 1.8)
+        circleView.animateCircle(duration: 0.5)
     }
 
     
