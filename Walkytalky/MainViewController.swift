@@ -22,6 +22,7 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
     @IBOutlet weak var recordBackColoredView: UIView!
     @IBOutlet weak var recordBtnBackView: UIView!
     @IBOutlet weak var recordButton: UIButton!
+    var circleView: CircleView!
 
     let viewModel = MainViewModel()
     let disposeBag = DisposeBag()
@@ -48,7 +49,7 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
             .longPressGesture()
             .when(UIGestureRecognizer.State.changed)
             .subscribe({ _ in
-                self.recordBackColoredView.backgroundColor = UIColor.red
+                self.addCircleView()
                 self.startToRecord()
             })
             .disposed(by: disposeBag)
@@ -57,7 +58,7 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
             .longPressGesture()
             .when(UIGestureRecognizer.State.ended)
             .subscribe({ _ in
-                self.recordBackColoredView.backgroundColor = UIColor.white
+                self.circleView.removeFromSuperview()
                 self.finishRecord()
             })
             .disposed(by: disposeBag)
@@ -75,6 +76,23 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
         recordBtnBackView.cornerRadius = recordBtnBackView.frame.height * 0.5
         recordButton.cornerRadius = recordButton.frame.height * 0.5
     }
+    
+    private func addCircleView() {
+        let circleWidth = CGFloat(recordBackColoredView.frame.width)
+        let circleHeight = circleWidth
+        
+        // Create a new CircleView
+        circleView = CircleView(frame: CGRect(x: 0,
+                                                  y: 0,
+                                                  width: circleWidth,
+                                                  height: circleHeight))
+        
+        recordBackColoredView.addSubview(circleView)
+        
+        // Animate the drawing of the circle over the course of 1 second
+        circleView.animateCircle(duration: 1.8)
+    }
+
     
     private func setupAudio() {
         recordingSession = AVAudioSession.sharedInstance()
