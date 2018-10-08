@@ -1,0 +1,4 @@
+framework module RxGesture {
+  header "RxGesture-Swift.h"
+  requires objc
+}

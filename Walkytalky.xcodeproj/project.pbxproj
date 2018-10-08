@@ -181,6 +181,7 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/RxSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RxGesture.framework",
 			);
 			outputFileListPaths = (
 			);

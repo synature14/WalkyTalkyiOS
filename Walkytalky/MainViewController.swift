@@ -8,6 +8,8 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
+
 
 class MainViewController: UIViewController {
     
@@ -22,6 +24,7 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
+        recordButton.rx.tap
 //        bindViewModel()
     }
     
