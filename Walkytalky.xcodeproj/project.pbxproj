@@ -8,19 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		984CD2A9215B30E000D2C417 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984CD2A8215B30E000D2C417 /* AppDelegate.swift */; };
-		984CD2AB215B30E000D2C417 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984CD2AA215B30E000D2C417 /* ViewController.swift */; };
+		984CD2AB215B30E000D2C417 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984CD2AA215B30E000D2C417 /* MainViewController.swift */; };
 		984CD2AE215B30E000D2C417 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 984CD2AC215B30E000D2C417 /* Main.storyboard */; };
 		984CD2B0215B30E100D2C417 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 984CD2AF215B30E100D2C417 /* Assets.xcassets */; };
 		984CD2B3215B30E100D2C417 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 984CD2B1215B30E100D2C417 /* LaunchScreen.storyboard */; };
 		984CD2BD215B790900D2C417 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 984CD2BC215B790900D2C417 /* RxSwift.framework */; };
 		984CD2C0215B7E0600D2C417 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984CD2BF215B7E0600D2C417 /* MainViewModel.swift */; };
 		984CD2C2215B7EAC00D2C417 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984CD2C1215B7EAC00D2C417 /* Bindable.swift */; };
+		98A7A0192167351100CDFD8D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A7A0182167351100CDFD8D /* Extensions.swift */; };
+		98A7A01C2167388100CDFD8D /* OptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A7A01B2167388100CDFD8D /* OptionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		984CD2A5215B30E000D2C417 /* Walkytalky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Walkytalky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		984CD2A8215B30E000D2C417 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		984CD2AA215B30E000D2C417 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		984CD2AA215B30E000D2C417 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		984CD2AD215B30E000D2C417 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		984CD2AF215B30E100D2C417 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		984CD2B2215B30E100D2C417 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -28,6 +30,8 @@
 		984CD2BC215B790900D2C417 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
 		984CD2BF215B7E0600D2C417 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		984CD2C1215B7EAC00D2C417 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
+		98A7A0182167351100CDFD8D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		98A7A01B2167388100CDFD8D /* OptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,14 +66,15 @@
 		984CD2A7215B30E000D2C417 /* Walkytalky */ = {
 			isa = PBXGroup;
 			children = (
+				98A7A0182167351100CDFD8D /* Extensions.swift */,
+				98A7A017216724F600CDFD8D /* ViewModel */,
 				984CD2A8215B30E000D2C417 /* AppDelegate.swift */,
 				984CD2AC215B30E000D2C417 /* Main.storyboard */,
-				984CD2AA215B30E000D2C417 /* ViewController.swift */,
-				984CD2BF215B7E0600D2C417 /* MainViewModel.swift */,
+				984CD2AA215B30E000D2C417 /* MainViewController.swift */,
 				984CD2AF215B30E100D2C417 /* Assets.xcassets */,
 				984CD2B1215B30E100D2C417 /* LaunchScreen.storyboard */,
 				984CD2B4215B30E100D2C417 /* Info.plist */,
-				984CD2C1215B7EAC00D2C417 /* Bindable.swift */,
+				98A7A01A2167385700CDFD8D /* Option */,
 			);
 			path = Walkytalky;
 			sourceTree = "<group>";
@@ -80,6 +85,23 @@
 				984CD2BC215B790900D2C417 /* RxSwift.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		98A7A017216724F600CDFD8D /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				984CD2BF215B7E0600D2C417 /* MainViewModel.swift */,
+				984CD2C1215B7EAC00D2C417 /* Bindable.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		98A7A01A2167385700CDFD8D /* Option */ = {
+			isa = PBXGroup;
+			children = (
+				98A7A01B2167388100CDFD8D /* OptionViewController.swift */,
+			);
+			path = Option;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -175,10 +197,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				984CD2AB215B30E000D2C417 /* ViewController.swift in Sources */,
+				98A7A0192167351100CDFD8D /* Extensions.swift in Sources */,
+				984CD2AB215B30E000D2C417 /* MainViewController.swift in Sources */,
 				984CD2A9215B30E000D2C417 /* AppDelegate.swift in Sources */,
 				984CD2C2215B7EAC00D2C417 /* Bindable.swift in Sources */,
 				984CD2C0215B7E0600D2C417 /* MainViewModel.swift in Sources */,
+				98A7A01C2167388100CDFD8D /* OptionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

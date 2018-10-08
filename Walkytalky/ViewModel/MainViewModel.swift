@@ -12,5 +12,5 @@ import RxSwift
 
 class MainViewModel {
     let count = Variable<Int>(0)
-     
+    
 }
