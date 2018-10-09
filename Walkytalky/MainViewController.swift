@@ -18,6 +18,8 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
     var audioRecorder: AVAudioRecorder!
     var audioPlayer: AVAudioPlayer!
     var numberOfRecords: Int = 0
+    // 임시
+    let dataString: String = "Touched..!"
     
     let walkyTalkyService = Pairing()
     
@@ -150,6 +152,12 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
             print("cannot play")
         }
     }
+    
+    
+    @IBAction func sendStringData(_ sender: Any) {
+        walkyTalkyService.sendString()
+    }
+    
 }
 
 extension MainViewController: PairingDelegate {
@@ -162,6 +170,12 @@ extension MainViewController: PairingDelegate {
     func playRecord(manager: Pairing, audioFile: AVAudioFile) {
         OperationQueue.main.addOperation {
             self.playRecordFile()
+        }
+    }
+    
+    func showText() {
+        DispatchQueue.main.async {
+            self.connectionLabel.text?.append(contentsOf: self.dataString)
         }
     }
 }

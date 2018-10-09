@@ -14,6 +14,8 @@ protocol PairingDelegate {
     func connectedDevicesChanged(manager: Pairing, connectedDevices: [String])
     // 아직 진행중..
     func playRecord(manager: Pairing, audioFile: AVAudioFile)
+    // 임시
+    func showText()
 }
 
 
@@ -61,6 +63,17 @@ class Pairing: NSObject {
         }
     }
     
+    func sendString() {
+        if session.connectedPeers.count > 0 {
+            do {
+//                let data = try Data(contentsOf: path)
+                try session.send("12234".data(using: .utf8)!, toPeers: session.connectedPeers, with: .reliable)
+            } catch {
+                NSLog("%@", "Error for sending String: \(error)")
+            }
+        }
+    }
+    
     deinit {
         serviceAdvertiser.stopAdvertisingPeer()
         serviceBrowser.stopBrowsingForPeers()
@@ -103,8 +116,9 @@ extension Pairing: MCSessionDelegate {
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         NSLog("%@", "didReceiveData: \(data)")
-        guard let recordFile = data as? AVAudioFile else { return }
-        self.delegate?.playRecord(manager: self, audioFile: recordFile)
+//        guard let recordFile = data as? AVAudioFile else { return }
+//        self.delegate?.playRecord(manager: self, audioFile: recordFile)
+        self.delegate?.showText()
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {

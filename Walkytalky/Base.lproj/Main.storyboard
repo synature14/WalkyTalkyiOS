@@ -95,7 +95,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bOk-ox-ScP">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bOk-ox-ScP">
                                                 <rect key="frame" x="157" y="14" width="35.333333333333343" height="17"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <nil key="textColor"/>
@@ -111,6 +111,17 @@
                                             <constraint firstAttribute="height" constant="45" id="eJe-UT-9EE"/>
                                         </constraints>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cGZ-bx-gkG">
+                                        <rect key="frame" x="137.66666666666666" y="49.666666666666671" width="46" height="46"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="46" id="gvK-eH-ERH"/>
+                                            <constraint firstAttribute="height" constant="46" id="jWT-Ub-sf7"/>
+                                        </constraints>
+                                        <state key="normal" title="press!"/>
+                                        <connections>
+                                            <action selector="sendStringData:" destination="BYZ-38-t0r" eventType="touchUpInside" id="C3n-U7-72H"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -118,6 +129,8 @@
                                     <constraint firstItem="ibF-u3-tFW" firstAttribute="leading" secondItem="Mky-Hk-0fT" secondAttribute="leading" constant="20" id="JFa-i0-VKh"/>
                                     <constraint firstItem="2KR-rc-dLp" firstAttribute="leading" secondItem="Mky-Hk-0fT" secondAttribute="leading" id="LWq-ii-t1o"/>
                                     <constraint firstItem="2KR-rc-dLp" firstAttribute="trailing" secondItem="Mky-Hk-0fT" secondAttribute="trailing" id="R2s-Ly-ULB"/>
+                                    <constraint firstItem="cGZ-bx-gkG" firstAttribute="leading" secondItem="3We-5r-fWP" secondAttribute="trailing" constant="30" id="TfK-pI-EdG"/>
+                                    <constraint firstItem="cGZ-bx-gkG" firstAttribute="centerY" secondItem="3We-5r-fWP" secondAttribute="centerY" id="WsK-6u-HlX"/>
                                     <constraint firstItem="ibF-u3-tFW" firstAttribute="trailing" secondItem="Mky-Hk-0fT" secondAttribute="trailing" constant="-20" id="kGF-Af-aLu"/>
                                     <constraint firstAttribute="bottom" secondItem="2KR-rc-dLp" secondAttribute="bottom" constant="60" id="lGO-2G-bq7"/>
                                     <constraint firstItem="3We-5r-fWP" firstAttribute="top" secondItem="Z3q-gL-0aL" secondAttribute="top" constant="50" id="lLH-7r-CLq"/>
