@@ -12,10 +12,8 @@ import MultipeerConnectivity
 
 protocol PairingDelegate {
     func connectedDevicesChanged(manager: Pairing, connectedDevices: [String])
-    // 아직 진행중..
-    func playRecord(manager: Pairing, audioFile: AVAudioFile)
-    // 임시
-    func showText()
+    func isAbleToConnect(bool: Bool)
+    func playRecord(manager: Pairing, audioData: Data)
 }
 
 
@@ -47,29 +45,13 @@ class Pairing: NSObject {
         serviceBrowser.startBrowsingForPeers()
     }
     
-    func sendData(path: URL) {
+    func sendData(data: Data) {
         NSLog("%@", "sendData to \(session.connectedPeers.count) peers")
         if session.connectedPeers.count > 0 {
             do {
-//                let recordedData = try AVAudioFile(forReading: path)
-//                    AVAudioPlayer(contentsOf: path)
-               self.session.sendResource(at: path, withName: "Sending", toPeer: session.connectedPeers[0], withCompletionHandler: { error in
-                    NSLog("%@", "Error for sending: \(error)")
-                })
-//                try self.session.send(recordedData, toPeers: session.connectedPeers, with: .reliable)
+                try self.session.send(data, toPeers: session.connectedPeers, with: .reliable)
             } catch let error {
                 NSLog("%@", "Error for sending: \(error)")
-            }
-        }
-    }
-    
-    func sendString() {
-        if session.connectedPeers.count > 0 {
-            do {
-//                let data = try Data(contentsOf: path)
-                try session.send("12234".data(using: .utf8)!, toPeers: session.connectedPeers, with: .reliable)
-            } catch {
-                NSLog("%@", "Error for sending String: \(error)")
             }
         }
     }
@@ -100,37 +82,37 @@ extension Pairing: MCNearbyServiceBrowserDelegate {
         NSLog("%@", "Found peer! : \(peerID)")
         NSLog("%@", "invitePeer: \(peerID)")
         browser.invitePeer(peerID, to: self.session, withContext: nil, timeout: 10)
+        self.delegate?.isAbleToConnect(bool: true)
     }
     
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        NSLog("%@", "Lost peer.. : \(peerID)")
+        NSLog("%@", "*** Lost peer.. : \(peerID)")
+        self.delegate?.isAbleToConnect(bool: false)
     }
 }
 
 extension Pairing: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
-        NSLog("%@", "peer \(peerID) didChangeState: \(state.rawValue)")
+        NSLog("%@", "** peer \(peerID) didChangeState: \(state.rawValue)")
         self.delegate?.connectedDevicesChanged(manager: self, connectedDevices:
             session.connectedPeers.map{$0.displayName})
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        NSLog("%@", "didReceiveData: \(data)")
-//        guard let recordFile = data as? AVAudioFile else { return }
-//        self.delegate?.playRecord(manager: self, audioFile: recordFile)
-        self.delegate?.showText()
+        NSLog("%@", "- didReceiveData")
+        self.delegate?.playRecord(manager: self, audioData: data)
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
-        NSLog("%@", "didReceiveStream")
+        NSLog("%@", "- didReceiveStream")
     }
     
     func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
-        NSLog("%@", "didStartReceivingResourceWithName")
+        NSLog("%@", "- didStartReceivingResourceWithName")
     }
     
     func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
-        NSLog("%@", "didFinishReceivingResourceWithName")
+        NSLog("%@", "- didFinishReceivingResourceWithName")
     }
     
     

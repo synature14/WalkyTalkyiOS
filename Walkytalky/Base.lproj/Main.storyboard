@@ -60,10 +60,12 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Wo-P5-p68">
                                                 <rect key="frame" x="0.0" y="0.0" width="260" height="260"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                <state key="normal" title="Record"/>
+                                                <state key="normal" title="Tap To Record">
+                                                    <color key="titleColor" red="0.91764705879999997" green="0.91764705879999997" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" red="0.087302011986301373" green="0.52902375674931512" blue="0.50679825426575353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstItem="9Wo-P5-p68" firstAttribute="top" secondItem="ibF-u3-tFW" secondAttribute="top" id="6Sk-oq-iMj"/>
                                             <constraint firstItem="9Wo-P5-p68" firstAttribute="leading" secondItem="ibF-u3-tFW" secondAttribute="leading" id="HgZ-MQ-ioV"/>
@@ -83,20 +85,20 @@
                                             <color key="titleColor" red="0.91764705879999997" green="0.91764705879999997" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="playRecord:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pbZ-G1-NzI"/>
+                                            <action selector="playMessage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YyI-m4-cbw"/>
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2KR-rc-dLp">
-                                        <rect key="frame" x="37.666666666666657" y="637" width="300" height="45"/>
+                                        <rect key="frame" x="37.666666666666657" y="622" width="300" height="60"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connected Device :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KCB-0s-Wb5">
-                                                <rect key="frame" x="10" y="13.666666666666629" width="137" height="18"/>
+                                                <rect key="frame" x="10" y="21" width="137" height="18"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bOk-ox-ScP">
-                                                <rect key="frame" x="157" y="14" width="35.333333333333343" height="17"/>
+                                                <rect key="frame" x="157" y="21.666666666666629" width="35.333333333333343" height="17"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -108,20 +110,15 @@
                                             <constraint firstItem="KCB-0s-Wb5" firstAttribute="leading" secondItem="2KR-rc-dLp" secondAttribute="leading" constant="10" id="Dgf-Tm-oQJ"/>
                                             <constraint firstItem="bOk-ox-ScP" firstAttribute="centerY" secondItem="2KR-rc-dLp" secondAttribute="centerY" id="Fhn-CJ-buA"/>
                                             <constraint firstItem="bOk-ox-ScP" firstAttribute="leading" secondItem="KCB-0s-Wb5" secondAttribute="trailing" constant="10" id="RAI-bZ-X3A"/>
-                                            <constraint firstAttribute="height" constant="45" id="eJe-UT-9EE"/>
+                                            <constraint firstAttribute="height" constant="60" id="eJe-UT-9EE"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cGZ-bx-gkG">
-                                        <rect key="frame" x="137.66666666666666" y="49.666666666666671" width="46" height="46"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="46" id="gvK-eH-ERH"/>
-                                            <constraint firstAttribute="height" constant="46" id="jWT-Ub-sf7"/>
-                                        </constraints>
-                                        <state key="normal" title="press!"/>
-                                        <connections>
-                                            <action selector="sendStringData:" destination="BYZ-38-t0r" eventType="touchUpInside" id="C3n-U7-72H"/>
-                                        </connections>
-                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Message" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5KI-LI-ZuR">
+                                        <rect key="frame" x="127.66666666666666" y="64.666666666666657" width="76.666666666666657" height="15.666666666666671"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
+                                        <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -129,8 +126,8 @@
                                     <constraint firstItem="ibF-u3-tFW" firstAttribute="leading" secondItem="Mky-Hk-0fT" secondAttribute="leading" constant="20" id="JFa-i0-VKh"/>
                                     <constraint firstItem="2KR-rc-dLp" firstAttribute="leading" secondItem="Mky-Hk-0fT" secondAttribute="leading" id="LWq-ii-t1o"/>
                                     <constraint firstItem="2KR-rc-dLp" firstAttribute="trailing" secondItem="Mky-Hk-0fT" secondAttribute="trailing" id="R2s-Ly-ULB"/>
-                                    <constraint firstItem="cGZ-bx-gkG" firstAttribute="leading" secondItem="3We-5r-fWP" secondAttribute="trailing" constant="30" id="TfK-pI-EdG"/>
-                                    <constraint firstItem="cGZ-bx-gkG" firstAttribute="centerY" secondItem="3We-5r-fWP" secondAttribute="centerY" id="WsK-6u-HlX"/>
+                                    <constraint firstItem="5KI-LI-ZuR" firstAttribute="centerY" secondItem="3We-5r-fWP" secondAttribute="centerY" id="S8N-Iu-whG"/>
+                                    <constraint firstItem="5KI-LI-ZuR" firstAttribute="leading" secondItem="3We-5r-fWP" secondAttribute="trailing" constant="20" id="YQ3-E6-30J"/>
                                     <constraint firstItem="ibF-u3-tFW" firstAttribute="trailing" secondItem="Mky-Hk-0fT" secondAttribute="trailing" constant="-20" id="kGF-Af-aLu"/>
                                     <constraint firstAttribute="bottom" secondItem="2KR-rc-dLp" secondAttribute="bottom" constant="60" id="lGO-2G-bq7"/>
                                     <constraint firstItem="3We-5r-fWP" firstAttribute="top" secondItem="Z3q-gL-0aL" secondAttribute="top" constant="50" id="lLH-7r-CLq"/>
@@ -155,6 +152,8 @@
                     </view>
                     <connections>
                         <outlet property="connectionLabel" destination="bOk-ox-ScP" id="YMu-h0-P93"/>
+                        <outlet property="playButton" destination="3We-5r-fWP" id="YAI-KH-XVt"/>
+                        <outlet property="receivedAlarmLabel" destination="5KI-LI-ZuR" id="2Mo-ms-qit"/>
                         <outlet property="recordBackColoredView" destination="Mky-Hk-0fT" id="CNR-dd-BJv"/>
                         <outlet property="recordBtnBackView" destination="ibF-u3-tFW" id="2gA-Ez-F6w"/>
                         <outlet property="recordButton" destination="9Wo-P5-p68" id="Kdm-Xn-qHD"/>

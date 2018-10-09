@@ -18,8 +18,7 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
     var audioRecorder: AVAudioRecorder!
     var audioPlayer: AVAudioPlayer!
     var numberOfRecords: Int = 0
-    // 임시
-    let dataString: String = "Touched..!"
+    var receivedData: Data?
     
     let walkyTalkyService = Pairing()
     
@@ -28,6 +27,8 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
     @IBOutlet weak var recordButton: UIButton!
     var circleView: CircleView!
     @IBOutlet weak var connectionLabel: UILabel!
+    @IBOutlet weak var receivedAlarmLabel: UILabel!
+    @IBOutlet weak var playButton: UIButton!
     
     let viewModel = MainViewModel()
     let disposeBag = DisposeBag()
@@ -55,19 +56,17 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
                 self.finishRecord()
             })
             .disposed(by: disposeBag)
-        
-//        bindViewModel()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-//        viewModel.count.asObservable().subscribe().disposed(by: disposeBag)
     }
     
     private func setUI() {
         recordBackColoredView.cornerRadius = recordBackColoredView.frame.height * 0.5
         recordBtnBackView.cornerRadius = recordBtnBackView.frame.height * 0.5
         recordButton.cornerRadius = recordButton.frame.height * 0.5
+        recordButton.setTitle("No one to talk", for: .disabled)
     }
     
     private func addCircleView() {
@@ -91,7 +90,7 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
         recordingSession = AVAudioSession.sharedInstance()
        
         // 녹음 기록 불러와서 저장할 제목
-        if let number: Int = UserDefaults.standard.object(forKey: "myNumber") as? Int {
+        if let number: Int = UserDefaults.standard.object(forKey: "walkyTalky") as? Int {
             numberOfRecords = number
         }
         AVAudioSession.sharedInstance().requestRecordPermission({ hasPermission in
@@ -106,7 +105,9 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
     
     private func startToRecord() {
         if audioRecorder == nil {
-            numberOfRecords += 1
+            playButton.isEnabled = false
+            
+            numberOfRecords = 1
             let filename = directoryOfRecording().appendingPathComponent("\(numberOfRecords).m4a")
             let settings = [AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
                            AVSampleRateKey: 12000,
@@ -118,7 +119,7 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
                 audioRecorder.delegate = self
                 audioRecorder.record()
                 
-                recordButton.setTitle("Recordiing..", for: .normal)
+                recordButton.setTitle("Recording..", for: .normal)
             } catch {
                 print("error..!")
             }
@@ -129,35 +130,31 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
         // Stop audio recording
         audioRecorder.stop()
         audioRecorder = nil
-        UserDefaults.standard.set(numberOfRecords, forKey: "myNumber")
-        recordButton.setTitle("Start Recording", for: .normal)
-    }
-    
-    @IBAction func playRecord(_ sender: Any) {
-        let path = directoryOfRecording().appendingPathComponent("\(numberOfRecords).m4a")
-        do {
-            audioPlayer = try AVAudioPlayer(contentsOf: path)
-            audioPlayer.play()
-        } catch {
-            print("cannot play")
-        }
+        UserDefaults.standard.set(numberOfRecords, forKey: "walkyTalky")
+        recordButton.setTitle("Tap To Record", for: .normal)
+        let fileURL = directoryOfRecording().appendingPathComponent("1.m4a")
+        sendingRecord(path: fileURL)
     }
 
-    private func playRecordFile() {
-        let path = directoryOfRecording().appendingPathComponent("\(numberOfRecords).m4a")
+    private func sendingRecord(path: URL) {
         do {
-            audioPlayer = try AVAudioPlayer(contentsOf: path)
-            audioPlayer.play()
+            let recordedData = try Data(contentsOf: path)
+            walkyTalkyService.sendData(data: recordedData)
+            UserDefaults.standard.removeObject(forKey: "walkyTalky")
         } catch {
-            print("cannot play")
+            print("Cannot Finish Record...! \n")
         }
     }
     
-    
-    @IBAction func sendStringData(_ sender: Any) {
-        walkyTalkyService.sendString()
+    @IBAction func playMessage(_ sender: Any) {
+        guard let message = receivedData else { return }
+        do {
+            audioPlayer = try AVAudioPlayer(data: message)
+            audioPlayer.play()
+        } catch {
+            print("Cannot play...\n")
+        }
     }
-    
 }
 
 extension MainViewController: PairingDelegate {
@@ -167,15 +164,19 @@ extension MainViewController: PairingDelegate {
         }
     }
     
-    func playRecord(manager: Pairing, audioFile: AVAudioFile) {
-        OperationQueue.main.addOperation {
-            self.playRecordFile()
+    func isAbleToConnect(bool: Bool) {
+        if bool {
+            recordButton.isEnabled = true
+        } else {
+            recordButton.isEnabled = false
         }
     }
     
-    func showText() {
-        DispatchQueue.main.async {
-            self.connectionLabel.text?.append(contentsOf: self.dataString)
+    func playRecord(manager: Pairing, audioData: Data) {
+        OperationQueue.main.addOperation {
+            self.receivedAlarmLabel.text = "You got a message.\nPress the play button."
+            self.playButton.isEnabled = true
+            self.receivedData = audioData
         }
     }
 }
