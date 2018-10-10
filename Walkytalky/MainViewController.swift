@@ -22,10 +22,9 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
     
     let walkyTalkyService = Pairing()
     
-    @IBOutlet weak var recordBackColoredView: UIView!
-    @IBOutlet weak var recordBtnBackView: UIView!
+    @IBOutlet weak var indicatorBackView: NVActivityIndicatorView!
+    @IBOutlet weak var recordButtonIndicatorView: NVActivityIndicatorView!
     @IBOutlet weak var recordButton: UIButton!
-    var circleView: CircleView!
     @IBOutlet weak var connectionLabel: UILabel!
     @IBOutlet weak var receivedAlarmLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
@@ -38,12 +37,13 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
         setupAudio()
         setUI()
         walkyTalkyService.delegate = self
-
+        
         recordButton.rx
             .longPressGesture()
             .when(UIGestureRecognizer.State.began)
             .subscribe({ _ in
-                self.addCircleView()
+                self.recordButtonIndicatorView.stopAnimating()
+                self.indicatorBackView.startAnimating()
                 self.startToRecord()
             })
             .disposed(by: disposeBag)
@@ -52,7 +52,7 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
             .longPressGesture()
             .when(UIGestureRecognizer.State.ended)
             .subscribe({ _ in
-                self.circleView.removeFromSuperview()
+                self.indicatorBackView.stopAnimating()
                 self.finishRecord()
             })
             .disposed(by: disposeBag)
@@ -63,28 +63,13 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
     }
     
     private func setUI() {
-        recordBackColoredView.cornerRadius = recordBackColoredView.frame.height * 0.5
-        recordBtnBackView.cornerRadius = recordBtnBackView.frame.height * 0.5
-        recordButton.cornerRadius = recordButton.frame.height * 0.5
+        indicatorBackView.type = .circleStrokeSpin
+        indicatorBackView.color = .red
+        recordButtonIndicatorView.type = .ballScaleMultiple
+        recordButtonIndicatorView.color = #colorLiteral(red: 0.0862745098, green: 0.5294117647, blue: 0.5058823529, alpha: 1)
+        recordButton.isEnabled = false
         recordButton.setTitle("No one to talk", for: .disabled)
     }
-    
-    private func addCircleView() {
-        let circleWidth = CGFloat(recordBackColoredView.frame.width)
-        let circleHeight = circleWidth
-        
-        // Create a new CircleView
-        circleView = CircleView(frame: CGRect(x: 0,
-                                                  y: 0,
-                                                  width: circleWidth,
-                                                  height: circleHeight))
-        
-        recordBackColoredView.addSubview(circleView)
-        
-        // Animate the drawing of the circle over the course of 1 second
-        circleView.animateCircle(duration: 0.5)
-    }
-
     
     private func setupAudio() {
         recordingSession = AVAudioSession.sharedInstance()
@@ -103,6 +88,37 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
         return paths[0]
     }
     
+    
+    @IBAction func playMessage(_ sender: Any) {
+        guard let message = receivedData else { return }
+        do {
+            audioPlayer = try AVAudioPlayer(data: message)
+            audioPlayer.play()
+        } catch {
+            print("Cannot play...\n")
+        }
+    }
+}
+
+extension MainViewController {
+//    private func addCircleView() {
+//        let circleWidth = CGFloat(recordBackColoredView.frame.width)
+//        let circleHeight = circleWidth
+//
+//        // Create a new CircleView
+//        circleView = CircleView(frame: CGRect(x: 0,
+//                                              y: 0,
+//                                              width: circleWidth,
+//                                              height: circleHeight))
+//
+//        recordBackColoredView.addSubview(circleView)
+//
+//        // Animate the drawing of the circle over the course of 1 second
+//        circleView.animateCircle(duration: 0.5)
+//    }
+}
+
+extension MainViewController {
     private func startToRecord() {
         if audioRecorder == nil {
             playButton.isEnabled = false
@@ -110,9 +126,9 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
             numberOfRecords = 1
             let filename = directoryOfRecording().appendingPathComponent("\(numberOfRecords).m4a")
             let settings = [AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-                           AVSampleRateKey: 12000,
-                           AVNumberOfChannelsKey : 1,
-                           AVEncoderAudioQualityKey : AVAudioQuality.high.rawValue]
+                            AVSampleRateKey: 12000,
+                            AVNumberOfChannelsKey : 1,
+                            AVEncoderAudioQualityKey : AVAudioQuality.high.rawValue]
             // Start Audio Recording
             do {
                 audioRecorder = try AVAudioRecorder(url: filename, settings: settings)
@@ -130,12 +146,13 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
         // Stop audio recording
         audioRecorder.stop()
         audioRecorder = nil
+        indicatorBackView.stopAnimating()
         UserDefaults.standard.set(numberOfRecords, forKey: "walkyTalky")
         recordButton.setTitle("Tap To Record", for: .normal)
         let fileURL = directoryOfRecording().appendingPathComponent("1.m4a")
         sendingRecord(path: fileURL)
     }
-
+    
     private func sendingRecord(path: URL) {
         do {
             let recordedData = try Data(contentsOf: path)
@@ -143,16 +160,6 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
             UserDefaults.standard.removeObject(forKey: "walkyTalky")
         } catch {
             print("Cannot Finish Record...! \n")
-        }
-    }
-    
-    @IBAction func playMessage(_ sender: Any) {
-        guard let message = receivedData else { return }
-        do {
-            audioPlayer = try AVAudioPlayer(data: message)
-            audioPlayer.play()
-        } catch {
-            print("Cannot play...\n")
         }
     }
 }
@@ -167,8 +174,10 @@ extension MainViewController: PairingDelegate {
     func isAbleToConnect(bool: Bool) {
         if bool {
             recordButton.isEnabled = true
+            recordButtonIndicatorView.startAnimating()
         } else {
             recordButton.isEnabled = false
+            print("\n** Unable to Connect other devices")
         }
     }
     
