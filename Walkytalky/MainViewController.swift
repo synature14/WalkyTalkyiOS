@@ -8,9 +8,9 @@
 
 import UIKit
 import RxSwift
-import RxCocoa
 import RxGesture
 import AVFoundation
+import NVActivityIndicatorView
 
 class MainViewController: UIViewController, AVAudioRecorderDelegate {
     
