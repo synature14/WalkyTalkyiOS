@@ -9,19 +9,6 @@
 import Foundation
 import UIKit
 
-extension UIView {
-   
-    var cornerRadius: CGFloat {
-        get {
-            return layer.cornerRadius
-        }
-        set {
-            self.clipsToBounds = true
-            layer.cornerRadius = newValue
-        }
-    }
-}
-
 class CircleView: UIView {
     var circleLayer: CAShapeLayer!
     override init(frame: CGRect) {
