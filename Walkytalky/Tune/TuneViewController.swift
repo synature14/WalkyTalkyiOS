@@ -8,10 +8,10 @@
 
 import UIKit
 
-class OptionsViewController: UIViewController, Bindable {
-    typealias ViewModelType = OptionsViewModel
+class TuneViewController: UIViewController, Bindable {
+    typealias ViewModelType = TuneViewModel
     
-    var viewModel: OptionsViewModel!
+    var viewModel: TuneViewModel!
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -20,8 +20,4 @@ class OptionsViewController: UIViewController, Bindable {
     func bindViewModel() {
         
     }
-}
-
-extension OptionsViewController {
-    
 }

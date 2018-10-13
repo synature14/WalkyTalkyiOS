@@ -17,12 +17,12 @@
 		984CD2C2215B7EAC00D2C417 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984CD2C1215B7EAC00D2C417 /* Bindable.swift */; };
 		98A4F16B216B96A300892BBB /* Pairing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A4F16A216B96A300892BBB /* Pairing.swift */; };
 		98A7A0192167351100CDFD8D /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A7A0182167351100CDFD8D /* CircleView.swift */; };
-		98A7A01C2167388100CDFD8D /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A7A01B2167388100CDFD8D /* OptionsViewController.swift */; };
+		98A7A01C2167388100CDFD8D /* TuneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A7A01B2167388100CDFD8D /* TuneViewController.swift */; };
 		FC16B7902170908B007FC4BC /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC16B78F2170908B007FC4BC /* UIView+Extension.swift */; };
 		FC16B79221709112007FC4BC /* Root.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC16B79121709112007FC4BC /* Root.storyboard */; };
 		FC16B79421709122007FC4BC /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC16B79321709122007FC4BC /* RootViewController.swift */; };
-		FCFCF9F12170991C00CF5FBB /* Option.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FCFCF9F02170991C00CF5FBB /* Option.storyboard */; };
-		FCFCF9F32170A74500CF5FBB /* OptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFCF9F22170A74500CF5FBB /* OptionsViewModel.swift */; };
+		FCFCF9F12170991C00CF5FBB /* Tune.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FCFCF9F02170991C00CF5FBB /* Tune.storyboard */; };
+		FCFCF9F32170A74500CF5FBB /* TuneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFCF9F22170A74500CF5FBB /* TuneViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,12 +38,12 @@
 		984CD2C1215B7EAC00D2C417 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		98A4F16A216B96A300892BBB /* Pairing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pairing.swift; sourceTree = "<group>"; };
 		98A7A0182167351100CDFD8D /* CircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
-		98A7A01B2167388100CDFD8D /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
+		98A7A01B2167388100CDFD8D /* TuneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TuneViewController.swift; sourceTree = "<group>"; };
 		FC16B78F2170908B007FC4BC /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		FC16B79121709112007FC4BC /* Root.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Root.storyboard; sourceTree = "<group>"; };
 		FC16B79321709122007FC4BC /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
-		FCFCF9F02170991C00CF5FBB /* Option.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Option.storyboard; sourceTree = "<group>"; };
-		FCFCF9F22170A74500CF5FBB /* OptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewModel.swift; sourceTree = "<group>"; };
+		FCFCF9F02170991C00CF5FBB /* Tune.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tune.storyboard; sourceTree = "<group>"; };
+		FCFCF9F22170A74500CF5FBB /* TuneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TuneViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,7 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				FC16B78D2170903C007FC4BC /* Main */,
-				98A7A01A2167385700CDFD8D /* Option */,
+				98A7A01A2167385700CDFD8D /* Tune */,
 				FC16B78C2170901C007FC4BC /* Common */,
 				FC16B7952170914C007FC4BC /* Resource */,
 				FC16B78E2170907B007FC4BC /* Extension */,
@@ -100,14 +100,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		98A7A01A2167385700CDFD8D /* Option */ = {
+		98A7A01A2167385700CDFD8D /* Tune */ = {
 			isa = PBXGroup;
 			children = (
-				FCFCF9F02170991C00CF5FBB /* Option.storyboard */,
-				98A7A01B2167388100CDFD8D /* OptionsViewController.swift */,
-				FCFCF9F22170A74500CF5FBB /* OptionsViewModel.swift */,
+				FCFCF9F02170991C00CF5FBB /* Tune.storyboard */,
+				98A7A01B2167388100CDFD8D /* TuneViewController.swift */,
+				FCFCF9F22170A74500CF5FBB /* TuneViewModel.swift */,
 			);
-			path = Option;
+			path = Tune;
 			sourceTree = "<group>";
 		};
 		FC16B78C2170901C007FC4BC /* Common */ = {
@@ -205,7 +205,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FCFCF9F12170991C00CF5FBB /* Option.storyboard in Resources */,
+				FCFCF9F12170991C00CF5FBB /* Tune.storyboard in Resources */,
 				984CD2B3215B30E100D2C417 /* LaunchScreen.storyboard in Resources */,
 				984CD2B0215B30E100D2C417 /* Assets.xcassets in Resources */,
 				FC16B79221709112007FC4BC /* Root.storyboard in Resources */,
@@ -251,9 +251,9 @@
 				984CD2A9215B30E000D2C417 /* AppDelegate.swift in Sources */,
 				984CD2C2215B7EAC00D2C417 /* Bindable.swift in Sources */,
 				984CD2C0215B7E0600D2C417 /* MainViewModel.swift in Sources */,
-				FCFCF9F32170A74500CF5FBB /* OptionsViewModel.swift in Sources */,
+				FCFCF9F32170A74500CF5FBB /* TuneViewModel.swift in Sources */,
 				98A4F16B216B96A300892BBB /* Pairing.swift in Sources */,
-				98A7A01C2167388100CDFD8D /* OptionsViewController.swift in Sources */,
+				98A7A01C2167388100CDFD8D /* TuneViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
