@@ -12,15 +12,8 @@ import RxGesture
 import AVFoundation
 import NVActivityIndicatorView
 
-class MainViewController: UIViewController, AVAudioRecorderDelegate {
-    
-    var recordingSession: AVAudioSession!
-    var audioRecorder: AVAudioRecorder!
-    var audioPlayer: AVAudioPlayer!
-    var numberOfRecords: Int = 0
-    var receivedData: Data?
-    
-    let walkyTalkyService = Pairing()
+class MainViewController: UIViewController, Bindable, AVAudioRecorderDelegate {
+    typealias ViewModelType = MainViewModel
     
     @IBOutlet weak var indicatorBackView: NVActivityIndicatorView!
     @IBOutlet weak var recordButtonIndicatorView: NVActivityIndicatorView!
@@ -29,33 +22,26 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
     @IBOutlet weak var receivedAlarmLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
     
-    let viewModel = MainViewModel()
+    var viewModel: MainViewModel!
+    
+    var recordingSession: AVAudioSession!
+    var audioRecorder: AVAudioRecorder!
+    var audioPlayer: AVAudioPlayer!
+    var numberOfRecords: Int = 0
+    var receivedData: Data?
+    
+    let walkyTalkyService = Pairing()
     let disposeBag = DisposeBag()
+    
+    func bindViewModel() {
+        bindButtons()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAudio()
         setUI()
         walkyTalkyService.delegate = self
-        
-        recordButton.rx
-            .longPressGesture()
-            .when(UIGestureRecognizer.State.began)
-            .subscribe({ _ in
-                self.recordButtonIndicatorView.stopAnimating()
-                self.indicatorBackView.startAnimating()
-                self.startToRecord()
-            })
-            .disposed(by: disposeBag)
-
-        recordButton.rx
-            .longPressGesture()
-            .when(UIGestureRecognizer.State.ended)
-            .subscribe({ _ in
-                self.indicatorBackView.stopAnimating()
-                self.finishRecord()
-            })
-            .disposed(by: disposeBag)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -98,24 +84,6 @@ class MainViewController: UIViewController, AVAudioRecorderDelegate {
             print("Cannot play...\n")
         }
     }
-}
-
-extension MainViewController {
-//    private func addCircleView() {
-//        let circleWidth = CGFloat(recordBackColoredView.frame.width)
-//        let circleHeight = circleWidth
-//
-//        // Create a new CircleView
-//        circleView = CircleView(frame: CGRect(x: 0,
-//                                              y: 0,
-//                                              width: circleWidth,
-//                                              height: circleHeight))
-//
-//        recordBackColoredView.addSubview(circleView)
-//
-//        // Animate the drawing of the circle over the course of 1 second
-//        circleView.animateCircle(duration: 0.5)
-//    }
 }
 
 extension MainViewController {
@@ -188,4 +156,46 @@ extension MainViewController: PairingDelegate {
             self.receivedData = audioData
         }
     }
+}
+
+extension MainViewController {
+    private func bindButtons() {
+        recordButton.rx
+            .longPressGesture()
+            .when(UIGestureRecognizer.State.began)
+            .subscribe({ _ in
+                self.recordButtonIndicatorView.stopAnimating()
+                self.indicatorBackView.startAnimating()
+                self.startToRecord()
+            })
+            .disposed(by: disposeBag)
+        
+        recordButton.rx
+            .longPressGesture()
+            .when(UIGestureRecognizer.State.ended)
+            .subscribe({ _ in
+                self.indicatorBackView.stopAnimating()
+                self.finishRecord()
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+
+extension MainViewController {
+    //    private func addCircleView() {
+    //        let circleWidth = CGFloat(recordBackColoredView.frame.width)
+    //        let circleHeight = circleWidth
+    //
+    //        // Create a new CircleView
+    //        circleView = CircleView(frame: CGRect(x: 0,
+    //                                              y: 0,
+    //                                              width: circleWidth,
+    //                                              height: circleHeight))
+    //
+    //        recordBackColoredView.addSubview(circleView)
+    //
+    //        // Animate the drawing of the circle over the course of 1 second
+    //        circleView.animateCircle(duration: 0.5)
+    //    }
 }
