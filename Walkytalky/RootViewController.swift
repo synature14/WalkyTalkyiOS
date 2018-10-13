@@ -9,10 +9,27 @@
 import UIKit
 
 class RootViewController: UIViewController {
+    
+    @IBOutlet weak var mainContainerView: UIView!
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        guard let identifier = segue.identifier else {
+            return
+        }
+        
+        switch identifier {
+        case "Main":
+            guard let vc = segue.destination as? MainViewController else {
+                return
+            }
+            vc.bindViewModel(to: MainViewModel())
+        default:
+            break
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
 }
