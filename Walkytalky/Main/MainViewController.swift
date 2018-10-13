@@ -27,6 +27,8 @@ class MainViewController: UIViewController, Bindable {
     
     func bindViewModel() {
         bindButtons()
+        bindProperties()
+        bindViewAction()
     }
     
     override func viewDidLoad() {
@@ -116,6 +118,8 @@ extension MainViewController {
                     return "\(results), \(deviceName)"
                 }
             }
+            .map { $0.dropFirst() }
+            .map { String($0) }
             .bind(to: connectionLabel.rx.text)
             .disposed(by: disposeBag)
     }
