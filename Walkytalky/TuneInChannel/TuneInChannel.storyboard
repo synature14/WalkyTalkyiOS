@@ -18,14 +18,26 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t9s-gR-kOU">
-                                <rect key="frame" x="0.0" y="20" width="240" height="647"/>
-                                <color key="backgroundColor" red="0.63921568627450975" green="0.63921568627450975" blue="0.63921568627450975" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="frame" x="0.0" y="20" width="160" height="647"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YUa-zj-OOZ" customClass="TuneInView" customModule="Walkytalky" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="70" height="647"/>
+                                        <color key="backgroundColor" red="1" green="0.85098039215686272" blue="0.38039215686274508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="70" id="653-85-I2m"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="0.41176470588235292" blue="0.29411764705882354" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="q7C-Rk-u2c"/>
+                                    <constraint firstItem="YUa-zj-OOZ" firstAttribute="top" secondItem="t9s-gR-kOU" secondAttribute="top" id="SuU-WU-e3K"/>
+                                    <constraint firstAttribute="width" constant="160" id="q7C-Rk-u2c"/>
+                                    <constraint firstItem="YUa-zj-OOZ" firstAttribute="leading" secondItem="t9s-gR-kOU" secondAttribute="leading" id="qJX-LC-Jkd"/>
+                                    <constraint firstAttribute="bottom" secondItem="YUa-zj-OOZ" secondAttribute="bottom" id="uM2-WF-zTJ"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TDc-KK-oXr">
-                                <rect key="frame" x="240" y="20" width="135" height="647"/>
+                                <rect key="frame" x="160" y="20" width="215" height="647"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
