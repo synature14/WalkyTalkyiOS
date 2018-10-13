@@ -24,19 +24,30 @@
                                     <constraint firstAttribute="width" constant="240" id="q7C-Rk-u2c"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TDc-KK-oXr">
+                                <rect key="frame" x="240" y="20" width="135" height="647"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="MBf-AA-Oen" firstAttribute="bottom" secondItem="t9s-gR-kOU" secondAttribute="bottom" id="0p0-Bb-SOf"/>
+                            <constraint firstAttribute="trailing" secondItem="TDc-KK-oXr" secondAttribute="trailing" id="8my-t4-6fI"/>
                             <constraint firstItem="t9s-gR-kOU" firstAttribute="leading" secondItem="MBf-AA-Oen" secondAttribute="leading" id="BH1-kK-aPV"/>
+                            <constraint firstItem="TDc-KK-oXr" firstAttribute="leading" secondItem="t9s-gR-kOU" secondAttribute="trailing" id="Cmy-Sh-QLn"/>
+                            <constraint firstItem="TDc-KK-oXr" firstAttribute="top" secondItem="MBf-AA-Oen" secondAttribute="top" id="WFK-r2-SEa"/>
                             <constraint firstItem="t9s-gR-kOU" firstAttribute="top" secondItem="MBf-AA-Oen" secondAttribute="top" id="qYo-KA-xog"/>
+                            <constraint firstItem="MBf-AA-Oen" firstAttribute="bottom" secondItem="TDc-KK-oXr" secondAttribute="bottom" id="yO3-j2-3hr"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="MBf-AA-Oen"/>
                     </view>
+                    <connections>
+                        <outlet property="outsideAreaView" destination="TDc-KK-oXr" id="e2V-ty-72p"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mo5-xr-KcF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-162" y="175"/>
+            <point key="canvasLocation" x="-162.40000000000001" y="174.96251874062969"/>
         </scene>
     </scenes>
 </document>
