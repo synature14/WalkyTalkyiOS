@@ -13,11 +13,15 @@ class OptionsViewController: UIViewController, Bindable {
     
     var viewModel: OptionsViewModel!
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     func bindViewModel() {
         
     }
+}
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+extension OptionsViewController {
+    
 }

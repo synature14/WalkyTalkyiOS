@@ -27,6 +27,8 @@ class MainViewController: UIViewController, Bindable {
     
     func bindViewModel() {
         bindButtons()
+        bindProperties()
+        bindViewAction()
     }
     
     override func viewDidLoad() {
@@ -49,7 +51,9 @@ class MainViewController: UIViewController, Bindable {
     
     
     @IBAction func playMessage(_ sender: Any) {
-        guard let receivedData = receivedData else { return }
+        guard let receivedData = receivedData else {
+            return
+        }
         viewModel.playReceivedData(receivedData)
     }
     
@@ -116,6 +120,8 @@ extension MainViewController {
                     return "\(results), \(deviceName)"
                 }
             }
+            .map { $0.dropFirst() }
+            .map { String($0) }
             .bind(to: connectionLabel.rx.text)
             .disposed(by: disposeBag)
     }
