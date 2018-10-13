@@ -51,7 +51,9 @@ class MainViewController: UIViewController, Bindable {
     
     
     @IBAction func playMessage(_ sender: Any) {
-        guard let receivedData = receivedData else { return }
+        guard let receivedData = receivedData else {
+            return
+        }
         viewModel.playReceivedData(receivedData)
     }
     
