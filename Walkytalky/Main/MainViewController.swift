@@ -50,6 +50,9 @@ class MainViewController: UIViewController, Bindable {
     }
     
     @objc private func handleScreenEdgeRecognizer(_ gesture: UIScreenEdgePanGestureRecognizer) {
+        guard gesture.state == .began else {
+            return
+        }
         viewModel.requestShowTuneinChannel()
     }
     

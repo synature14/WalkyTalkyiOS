@@ -13,8 +13,10 @@ import RxCocoa
 class TuneInChannelViewController: UIViewController, Bindable {
     typealias ViewModelType = TuneInChannelViewModel
     
-    let disposeBag = DisposeBag()
+    @IBOutlet weak var outsideAreaView: UIView!
+    
     var viewModel: TuneInChannelViewModel!
+    let disposeBag = DisposeBag()
     
     public static func create() -> TuneInChannelViewController {
         let sb = UIStoryboard(name: "TuneInChannel", bundle: nil)
@@ -52,7 +54,7 @@ extension TuneInChannelViewController {
         let tapGestureRecognizer = UITapGestureRecognizer(
             target: self,
             action: #selector(handleTapOutsideRecognizer(_:)))
-        view.addGestureRecognizer(tapGestureRecognizer)
+        outsideAreaView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     @objc private func handleTapOutsideRecognizer(_ gesture: UITapGestureRecognizer) {
