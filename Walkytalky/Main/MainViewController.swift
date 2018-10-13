@@ -34,10 +34,23 @@ class MainViewController: UIViewController, Bindable {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
+        setGestures()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+    }
+    
+    private func setGestures() {
+        let swipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(
+            target: self,
+            action: #selector(handleScreenEdgeRecognizer(_:)))
+        swipeGestureRecognizer.edges = .left
+        view.addGestureRecognizer(swipeGestureRecognizer)
+    }
+    
+    @objc private func handleScreenEdgeRecognizer(_ gesture: UIScreenEdgePanGestureRecognizer) {
+        viewModel.requestShowTuneinChannel()
     }
     
     private func setUI() {
@@ -67,10 +80,20 @@ class MainViewController: UIViewController, Bindable {
                 case .recordFinished:
                     self?.indicatorBackView.stopAnimating()
                     self?.recordButton.setTitle("Tap To Record", for: .normal)
+                case .showTuneInChannel:
+                    self?.showTuneinChannelController()
                 case .back:
                     break
                 }
             }).disposed(by: disposeBag)
+    }
+    
+    private func showTuneinChannelController() {
+        let vc = TuneInChannelViewController.create()
+        vc.bindViewModel(to: TuneInChannelViewModel())
+        vc.transitioningDelegate = self
+        vc.modalPresentationStyle = .custom
+        present(vc, animated: true, completion: nil)
     }
 }
 
@@ -127,3 +150,14 @@ extension MainViewController {
     }
 }
 
+extension MainViewController: UIViewControllerTransitioningDelegate {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        let transitionAnimator = CoverPartTransitionAnimator(transitionMode: .present)
+        return transitionAnimator
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        let transitionAnimator = CoverPartTransitionAnimator(transitionMode: .dismiss)
+        return transitionAnimator
+    }
+}

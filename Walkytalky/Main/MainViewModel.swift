@@ -16,6 +16,7 @@ class MainViewModel: NSObject, AVAudioRecorderDelegate {
     enum ViewAction {
         case recordStarted
         case recordFinished
+        case showTuneInChannel
         case back
     }
     
@@ -34,6 +35,10 @@ class MainViewModel: NSObject, AVAudioRecorderDelegate {
         super.init()
         walkyTalkyService.delegate = self
         setupAudio()
+    }
+    
+    func requestShowTuneinChannel() {
+        viewAction.onNext(.showTuneInChannel)
     }
     
     private func setupAudio() {
