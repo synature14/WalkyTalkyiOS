@@ -23,7 +23,13 @@ class TuneInView: UIView {
     }()
     
     private lazy var upperCurvePointViews: [UIView] = {
-        return [UIView(), UIView()]
+        let curveViews: [UIView] = [UIView(), UIView()]
+        for curveView in curveViews {
+            self.addSubview(curveView)
+            curveView.frame = CGRect(x: 0, y: 0, width: 5, height: 5)
+            curveView.backgroundColor = .red
+        }
+        return curveViews
     }()
     
     private lazy var bottomCurvePointViews: [UIView] = {
@@ -136,11 +142,18 @@ extension TuneInView {
     
     private func positionControlPoints() {
         for (index, pointView) in controlPointViews.enumerated() {
-            pointView.center = positionControlPoint(at: index)
+            pointView.center = calculateControlPointPosition(at: index)
         }
     }
     
-    private func positionControlPoint(at index: Int) -> CGPoint {
+    private func positionCurvePoint(at index: Int) {
+        guard index >= 0, index < controlPointViews.count else {
+            return
+        }
+        let controlPoint = controlPointViews[index]
+    }
+    
+    private func calculateControlPointPosition(at index: Int) -> CGPoint {
         guard index >= 0, index < controlPointViews.count else {
             return .zero
         }
