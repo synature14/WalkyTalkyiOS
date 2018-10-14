@@ -24,6 +24,10 @@ class MainViewModel: NSObject, AVAudioRecorderDelegate {
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
     var audioPlayer: AVAudioPlayer!
+    var outputStream: OutputStream?
+    var audioEngine: AVAudioEngine!
+    
+    
     let walkyTalkyService = Pairing()
     let viewAction = PublishSubject<ViewAction>()
     
@@ -51,18 +55,36 @@ class MainViewModel: NSObject, AVAudioRecorderDelegate {
         AVAudioSession.sharedInstance().requestRecordPermission({ hasPermission in
             if hasPermission { print("Accepted!") }
         })
-    }
-    
-    func directoryOfRecording() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return paths[0]
+        
+        audioEngine = AVAudioEngine()
     }
     
 }
 
 extension MainViewModel {
     public func startToRecord() {
+        walkyTalkyService.startCaptureOutput()
+    }
+    
+    public func finishRecord() {
+        walkyTalkyService.endCaptureOutput()
+    }
+    
+    public func playReceivedData(_ receivedData: Data) {
+        do {
+            audioPlayer = try AVAudioPlayer(data: receivedData)
+            audioPlayer.play()
+        } catch {
+            print("cannot Play received Data")
+        }
+    }
+    
+    /*
+    public func startToRecord() {
+    
         if audioRecorder == nil {
+            print("- startToRecord...!\n")
+            
             numberOfRecords = 1
             let filename = directoryOfRecording().appendingPathComponent("\(numberOfRecords).m4a")
             let settings = [AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
@@ -74,6 +96,7 @@ extension MainViewModel {
                 audioRecorder = try AVAudioRecorder(url: filename, settings: settings)
                 audioRecorder.delegate = self
                 audioRecorder.record()
+                
             } catch {
                 print("error..!")
             }
@@ -107,8 +130,8 @@ extension MainViewModel {
         } catch {
             print("cannot Play received Data")
         }
-        
     }
+    */
 }
 
 extension MainViewModel: PairingDelegate {
