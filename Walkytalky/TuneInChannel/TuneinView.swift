@@ -12,21 +12,9 @@ import UIKit
 
 class TuneInView: UIView {
     
-    private let firstControlPointView = UIView()
-    private let secondControlPointView = UIView()
-    private let thirdControlPointView = UIView()
-    private let fourthControlPointView = UIView()
-    private let fifthControlPointView = UIView()
-    
-    private var controlPointViews: [UIView] {
-        return [
-            firstControlPointView,
-            secondControlPointView,
-            thirdControlPointView,
-            fourthControlPointView,
-            fifthControlPointView
-        ]
-    }
+    private lazy var controlPointViews: [UIView] = {
+        return [UIView(), UIView(), UIView(), UIView(), UIView()]
+    }()
     
     private let elasticShapeLayer = CAShapeLayer()
     private var selectedControlPointIndex: Int?
@@ -153,8 +141,8 @@ extension TuneInView {
     }
     
     private func calculcteControlPointIndex(from point: CGPoint) -> Int {
-        let cellHeight = bounds.height / 5
-        let touchPointSection = Int(point.y / cellHeight)
+        let cellHeight = Int(bounds.height) / controlPointViews.count
+        let touchPointSection = Int(point.y) / cellHeight
         return touchPointSection
     }
 }
