@@ -24,8 +24,6 @@ class MainViewModel: NSObject, AVAudioRecorderDelegate {
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
     var audioPlayer: AVAudioPlayer!
-    var audioEngine: AVAudioEngine!
-    
     
     let walkyTalkyService = Pairing()
     let viewAction = PublishSubject<ViewAction>()
@@ -33,6 +31,7 @@ class MainViewModel: NSObject, AVAudioRecorderDelegate {
     let connectedDeviceNames = Variable<[String]>([])
     let isAbleToRecord = Variable<Bool>(false)
     let audioData = Variable<Data?>(nil)
+    var chunkData: Data = Data()
     
     override init() {
         super.init()
@@ -54,8 +53,6 @@ class MainViewModel: NSObject, AVAudioRecorderDelegate {
         AVAudioSession.sharedInstance().requestRecordPermission({ hasPermission in
             if hasPermission { print("Accepted!") }
         })
-        
-        audioEngine = AVAudioEngine()
     }
     
 }
@@ -74,63 +71,9 @@ extension MainViewModel {
             audioPlayer = try AVAudioPlayer(data: receivedData)
             audioPlayer.play()
         } catch {
-            print("playReceivedData Fail: \(error.localizedDescription)")
+            print("- PlayReceivedData Fail: \(error.localizedDescription)")
         }
     }
-    
-    /*
-    public func startToRecord() {
-    
-        if audioRecorder == nil {
-            print("- startToRecord...!\n")
-            
-            numberOfRecords = 1
-            let filename = directoryOfRecording().appendingPathComponent("\(numberOfRecords).m4a")
-            let settings = [AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-                            AVSampleRateKey: 12000,
-                            AVNumberOfChannelsKey : 1,
-                            AVEncoderAudioQualityKey : AVAudioQuality.high.rawValue]
-            // Start Audio Recording
-            do {
-                audioRecorder = try AVAudioRecorder(url: filename, settings: settings)
-                audioRecorder.delegate = self
-                audioRecorder.record()
-                
-            } catch {
-                print("error..!")
-            }
-        }
-    }
-    
-    public func finishRecord() {
-        // Stop audio recording
-        audioRecorder.stop()
-        audioRecorder = nil
-        
-        UserDefaults.standard.set(numberOfRecords, forKey: "walkyTalky")
-        let fileURL = directoryOfRecording().appendingPathComponent("1.m4a")
-        sendingRecord(path: fileURL)
-    }
-    
-    private func sendingRecord(path: URL) {
-        do {
-            let recordedData = try Data(contentsOf: path)
-            walkyTalkyService.sendData(data: recordedData)
-            UserDefaults.standard.removeObject(forKey: "walkyTalky")
-        } catch {
-            print("Cannot Finish Record...! \n")
-        }
-    }
-    
-    public func playReceivedData(_ receivedData: Data) {
-        do {
-            audioPlayer = try AVAudioPlayer(data: receivedData)
-            audioPlayer.play()
-        } catch {
-            print("cannot Play received Data")
-        }
-    }
-    */
 }
 
 extension MainViewModel: PairingDelegate {
@@ -143,6 +86,12 @@ extension MainViewModel: PairingDelegate {
     }
     
     func playRecord(manager: Pairing, audioData: Data) {
-        self.audioData.value = audioData
+        if chunkData.count > 1024 {
+            print("\n\n PlayRecord : chunkData.count = \(chunkData.count)")
+            self.audioData.value = audioData
+            self.chunkData.removeAll()
+        } else {
+            self.chunkData.append(audioData)
+        }
     }
 }

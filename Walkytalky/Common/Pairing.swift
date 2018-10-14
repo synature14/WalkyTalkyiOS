@@ -25,14 +25,13 @@ class Pairing: NSObject, StreamDelegate {
     private let serviceAdvertiser: MCNearbyServiceAdvertiser
     private let serviceBrowser: MCNearbyServiceBrowser
     
-    var inputStream: InputStream?
     var outputStream: OutputStream?
     
     // To create a MCSession on demand
     lazy var session: MCSession = {
         let session = MCSession(peer: self.myPeerId, securityIdentity: nil, encryptionPreference: .required)
-        Stream.getStreamsToHost(withName: "record", port: 1,
-                                inputStream: &inputStream, outputStream: &outputStream)
+//        Stream.getStreamsToHost(withName: "record", port: 1,
+//                                inputStream: &inputStream, outputStream: &outputStream)
         session.delegate = self
         return session
     }()
@@ -91,10 +90,6 @@ class Pairing: NSObject, StreamDelegate {
         
         serviceBrowser.delegate = self
         serviceBrowser.startBrowsingForPeers()
-        
-        inputStream?.schedule(in: RunLoop.main, forMode: .default)
-        inputStream?.delegate = self
-        inputStream?.open()
 
         outputStream?.schedule(in: RunLoop.main, forMode: .default)
         outputStream?.delegate = self
@@ -107,33 +102,6 @@ class Pairing: NSObject, StreamDelegate {
     
     public func endCaptureOutput() {
         captureSession.stopRunning()
-    }
-    
-    /* Sender & Receiver side */
-    func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
-        switch eventCode {
-        case .hasBytesAvailable:
-            print("**** New data has arrived")
-            receiveAvailableBytes()
-        case .hasSpaceAvailable:
-            print("*** The stream can accept bytes for writing")
-        default:
-            break
-        }
-    }
-    
-    private func receiveAvailableBytes() {
-        var buffer = [UInt8](repeating: 0, count: 4096)
-        if let inputStream = inputStream {
-            let numberOfBytesRead = inputStream.read(&buffer, maxLength: buffer.count)
-            if numberOfBytesRead < 0 {
-                print("\n*** Read Bytes Error... -->\(inputStream.streamError)\n")
-            } else {
-                let receivedData = Data(bytes: buffer, count: buffer.count)      // flatMap의 용도 : map 적용한뒤 nil값들을 삭제
-                
-                self.delegate?.playRecord(manager: self, audioData: receivedData)
-            }
-        }
     }
     
     private func sendAvailableBytes(sampleBuffer: CMSampleBuffer) {
@@ -152,18 +120,15 @@ class Pairing: NSObject, StreamDelegate {
                 start: &audioBufferList.mBuffers,
                 count: Int(audioBufferList.mNumberBuffers))
             
-            if let outputStream = outputStream {
-                for buffer in buffers {
-                    guard let framedBuffer = buffer.mData?.assumingMemoryBound(to: UInt8.self) else {
-                        print("buffer nil")
-                        return
-                    }
-                    do {
-                        try session.send(Data(bytes: framedBuffer, count: Int(buffer.mDataByteSize)), toPeers: session.connectedPeers, with: .reliable)
-                    } catch {
-                        print("Fail to send")
-                    }
-//                    outputStream.write(framedBuffer, maxLength: Int(buffer.mDataByteSize))
+            for buffer in buffers {
+                guard let framedBuffer = buffer.mData?.assumingMemoryBound(to: UInt8.self) else {
+                    print("buffer nil")
+                    return
+                }
+                do {
+                    try session.send(Data(bytes: framedBuffer, count: Int(buffer.mDataByteSize)), toPeers: session.connectedPeers, with: .reliable)
+                } catch {
+                    print("Fail to send")
                 }
             }
             self.delegate?.isAbleToConnect(bool: true)
@@ -173,7 +138,6 @@ class Pairing: NSObject, StreamDelegate {
     deinit {
         serviceAdvertiser.stopAdvertisingPeer()
         serviceBrowser.stopBrowsingForPeers()
-        inputStream?.close()
         outputStream?.close()
     }
 }
@@ -181,10 +145,9 @@ class Pairing: NSObject, StreamDelegate {
 
 extension Pairing: AVCaptureAudioDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        print("** Audio data RECEIVED..!!")
+        print("** Audio data Sending..!!")
         sendAvailableBytes(sampleBuffer: sampleBuffer)
     }
-    
 }
 
 extension Pairing: MCNearbyServiceAdvertiserDelegate {
@@ -228,12 +191,8 @@ extension Pairing: MCSessionDelegate {
         self.delegate?.playRecord(manager: self, audioData: data)
     }
     
-    /* Receiver side */
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
         print("- didReceiveStream")
-//        stream.delegate = self
-//        stream.schedule(in: RunLoop.main, forMode: .default)        // Stream should be executed in "asynchronous"
-//        stream.open()
     }
     
     func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
