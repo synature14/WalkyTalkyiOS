@@ -65,12 +65,8 @@ class MainViewController: UIViewController, Bindable {
         recordButton.setTitle("No one to talk", for: .disabled)
     }
     
-    
     @IBAction func playMessage(_ sender: Any) {
-        guard let receivedData = receivedData else {
-            return
-        }
-        viewModel.playReceivedData(receivedData)
+       
     }
     
     private func bindViewAction() {
@@ -133,9 +129,13 @@ extension MainViewController {
         
         viewModel.audioData.asDriver()
             .drive(onNext: { [weak self] data in
-                self?.receivedData = data
+//                self?.receivedData = data
                 self?.receivedAlarmLabel.text = "You got a message.\nPress the play button."
-                self?.playButton.isEnabled = true
+                guard let receivedData = data else {
+                    return
+                }
+                self?.viewModel.playReceivedData(receivedData)
+//                self?.playButton.isEnabled = true
             }).disposed(by: disposeBag)
     }
     
