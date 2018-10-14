@@ -13,7 +13,21 @@ import UIKit
 class TuneInView: UIView {
     
     private lazy var controlPointViews: [UIView] = {
-        return [UIView(), UIView(), UIView(), UIView(), UIView()]
+        let pointViews: [UIView] = [UIView(), UIView(), UIView(), UIView(), UIView()]
+        for pointView in pointViews {
+            self.addSubview(pointView)
+            pointView.frame = CGRect(x: 0, y: 0, width: 5, height: 5)
+            pointView.backgroundColor = .blue
+        }
+        return pointViews
+    }()
+    
+    private lazy var upperCurvePointViews: [UIView] = {
+        return [UIView(), UIView()]
+    }()
+    
+    private lazy var bottomCurvePointViews: [UIView] = {
+        return [UIView(), UIView()]
     }()
     
     private let elasticShapeLayer = CAShapeLayer()
@@ -117,12 +131,6 @@ extension TuneInView {
         elasticShapeLayer.fillColor = backgroundColor?.cgColor
         elasticShapeLayer.path = UIBezierPath(rect: frame).cgPath
         layer.addSublayer(elasticShapeLayer)
-        
-        for controlPoint in controlPointViews {
-            addSubview(controlPoint)
-            controlPoint.frame = CGRect(x: 0, y: 0, width: 5, height: 5)
-            controlPoint.backgroundColor = .blue // 디버깅 용도
-        }
         positionControlPoints()
     }
     
@@ -144,5 +152,12 @@ extension TuneInView {
         let cellHeight = Int(bounds.height) / controlPointViews.count
         let touchPointSection = Int(point.y) / cellHeight
         return touchPointSection
+    }
+    
+    private func setPositionCurvePoints(at index: Int) {
+        guard index >= 0, index < controlPointViews.count else {
+            return
+        }
+        
     }
 }
