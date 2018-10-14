@@ -98,6 +98,7 @@ class Pairing: NSObject, StreamDelegate {
 
         outputStream?.schedule(in: RunLoop.main, forMode: .default)
         outputStream?.delegate = self
+        outputStream?.open()
     }
     
     public func startCaptureOutput() {
@@ -129,6 +130,7 @@ class Pairing: NSObject, StreamDelegate {
                 print("\n*** Read Bytes Error... -->\(inputStream.streamError)\n")
             } else {
                 let receivedData = Data(bytes: buffer, count: buffer.count)      // flatMap의 용도 : map 적용한뒤 nil값들을 삭제
+                
                 self.delegate?.playRecord(manager: self, audioData: receivedData)
             }
         }
@@ -152,9 +154,16 @@ class Pairing: NSObject, StreamDelegate {
             
             if let outputStream = outputStream {
                 for buffer in buffers {
-                    guard let framedBuffer = buffer.mData?.assumingMemoryBound(to: UInt8.self) else { return }
-                    outputStream.write(framedBuffer, maxLength: Int(buffer.mDataByteSize))
-//                    data.append(frame!, count: Int(buffer.mDataByteSize))
+                    guard let framedBuffer = buffer.mData?.assumingMemoryBound(to: UInt8.self) else {
+                        print("buffer nil")
+                        return
+                    }
+                    do {
+                        try session.send(Data(bytes: framedBuffer, count: Int(buffer.mDataByteSize)), toPeers: session.connectedPeers, with: .reliable)
+                    } catch {
+                        print("Fail to send")
+                    }
+//                    outputStream.write(framedBuffer, maxLength: Int(buffer.mDataByteSize))
                 }
             }
             self.delegate?.isAbleToConnect(bool: true)
@@ -215,16 +224,16 @@ extension Pairing: MCSessionDelegate {
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        print("- didReceiveData")
+        print("\n- didReceiveData")
         self.delegate?.playRecord(manager: self, audioData: data)
     }
     
     /* Receiver side */
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
         print("- didReceiveStream")
-        stream.delegate = self
-        stream.schedule(in: RunLoop.main, forMode: .default)        // Stream should be executed in "asynchronous"
-        stream.open()
+//        stream.delegate = self
+//        stream.schedule(in: RunLoop.main, forMode: .default)        // Stream should be executed in "asynchronous"
+//        stream.open()
     }
     
     func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {

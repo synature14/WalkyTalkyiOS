@@ -24,7 +24,6 @@ class MainViewModel: NSObject, AVAudioRecorderDelegate {
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
     var audioPlayer: AVAudioPlayer!
-    var outputStream: OutputStream?
     var audioEngine: AVAudioEngine!
     
     
@@ -75,7 +74,7 @@ extension MainViewModel {
             audioPlayer = try AVAudioPlayer(data: receivedData)
             audioPlayer.play()
         } catch {
-            print("cannot Play received Data")
+            print("playReceivedData Fail: \(error.localizedDescription)")
         }
     }
     
