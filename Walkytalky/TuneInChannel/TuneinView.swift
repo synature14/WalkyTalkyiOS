@@ -22,18 +22,24 @@ class TuneInView: UIView {
         return pointViews
     }()
     
-    private lazy var upperCurvePointViews: [UIView] = {
+    private lazy var upperCurvePointViews: (UIView, UIView) = {
         let curveViews: [UIView] = [UIView(), UIView()]
         for curveView in curveViews {
             self.addSubview(curveView)
             curveView.frame = CGRect(x: 0, y: 0, width: 5, height: 5)
             curveView.backgroundColor = .red
         }
-        return curveViews
+        return (curveViews[0], curveViews[1])
     }()
     
-    private lazy var bottomCurvePointViews: [UIView] = {
-        return [UIView(), UIView()]
+    private lazy var bottomCurvePointViews: (UIView, UIView) = {
+        let curveViews: [UIView] = [UIView(), UIView()]
+        for curveView in curveViews {
+            self.addSubview(curveView)
+            curveView.frame = CGRect(x: 0, y: 0, width: 5, height: 5)
+            curveView.backgroundColor = .red
+        }
+        return (curveViews[0], curveViews[1])
     }()
     
     private let elasticShapeLayer = CAShapeLayer()
@@ -62,6 +68,15 @@ class TuneInView: UIView {
         // 애니메이션 작업
         startUpdatesLoop()
         animateControlPoint(at: controlPointIndex)
+        animateCurvePoint(at: controlPointIndex)
+    }
+    
+    private func animateCurvePoint(at index: Int) {
+        guard index >= 0, index < controlPointViews.count else {
+            return
+        }
+        let controlPoint = controlPointViews[index]
+        
     }
     
     private func startUpdatesLoop() {
