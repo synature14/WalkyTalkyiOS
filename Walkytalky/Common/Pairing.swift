@@ -26,7 +26,7 @@ class Pairing: NSObject, StreamDelegate {
     private let serviceAdvertiser: MCNearbyServiceAdvertiser
     private let serviceBrowser: MCNearbyServiceBrowser
     
-    let receivedData = BehaviorRelay<Data?>(value: nil)
+    let dataToTransfer = BehaviorRelay<Data?>(value: nil)
     let disposeBag = DisposeBag()
     
     var outputStream: OutputStream?
@@ -51,7 +51,7 @@ class Pairing: NSObject, StreamDelegate {
         super.init()
         setupMCService()
         setupOutstream()
-        bindReceivedData()
+        bindDataToTransfer()
     }
     
     private func sendReceivedDataToConnectedDevices(_ data: Data) {
@@ -126,8 +126,9 @@ extension Pairing: MCSessionDelegate {
 }
 
 extension Pairing {
-    private func bindReceivedData() {
-        receivedData.asObservable().filterOptional()
+    private func bindDataToTransfer() {
+        dataToTransfer.asObservable()
+            .filterOptional()
             .subscribe(onNext: { [weak self] receivedData in
                 self?.sendReceivedDataToConnectedDevices(receivedData)
             }).disposed(by: disposeBag)

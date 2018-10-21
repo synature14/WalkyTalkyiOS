@@ -9,7 +9,7 @@
 import Foundation
 import RxSwift
 import AVFoundation
-
+import RxCocoa
 
 class MainViewModel: NSObject, AVAudioRecorderDelegate {
     
@@ -27,15 +27,8 @@ class MainViewModel: NSObject, AVAudioRecorderDelegate {
     
     let connectedDeviceNames = Variable<[String]>([])
     let otherDeviceConnected = Variable<Bool>(false)
+    let voiceReceived = BehaviorRelay(value: false)
     let disposeBag = DisposeBag()
-    
-    // 지워질 프로퍼티
-    let audioData = Variable<Data?>(nil)
-    var chunkData: Data = Data()
-    var recordingSession: AVAudioSession!
-    var audioRecorder: AVAudioRecorder!
-    var audioPlayer: AVAudioPlayer!
-    var numberOfRecords: Int = 0
     
     override init() {
         super.init()
@@ -59,13 +52,7 @@ extension MainViewModel: PairingDelegate {
     }
     
     func playRecord(manager: Pairing, audioData: Data) {
-        if chunkData.count > 1024 {
-            print("\n\n PlayRecord : chunkData.count = \(chunkData.count)")
-            self.audioData.value = audioData
-            self.chunkData.removeAll()
-        } else {
-            self.chunkData.append(audioData)
-        }
+
     }
 }
 
@@ -79,23 +66,12 @@ extension MainViewModel {
     }
     
     public func playReceivedData(_ receivedData: Data) {
-        do {
-            audioPlayer = try AVAudioPlayer(data: receivedData)
-            audioPlayer.play()
-        } catch {
-            print("- PlayReceivedData Fail: \(error.localizedDescription)")
-        }
+
     }
 }
 
 extension MainViewModel {
     private func setupAudio() {
-        recordingSession = AVAudioSession.sharedInstance()
-        
-        // 녹음 기록 불러와서 저장할 제목
-        if let number: Int = UserDefaults.standard.object(forKey: "walkyTalky") as? Int {
-            numberOfRecords = number
-        }
         AVAudioSession.sharedInstance().requestRecordPermission({ hasPermission in
             if hasPermission { print("Accepted!") }
         })
@@ -105,7 +81,11 @@ extension MainViewModel {
 extension MainViewModel {
     private func bindRecordedVoiceToPairing() {
         voiceRecorder.onVoiceCaptured
-            .bind(to: walkyTalkyService.receivedData)
+            .bind(to: walkyTalkyService.dataToTransfer)
             .disposed(by: disposeBag)
+    }
+    
+    private func bindReceivedVoiceFromPairing() {
+        
     }
 }

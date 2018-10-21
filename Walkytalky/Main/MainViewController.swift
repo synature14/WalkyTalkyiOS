@@ -128,15 +128,12 @@ extension MainViewController {
             .drive(self.recordButton.rx.isEnabled)
             .disposed(by: disposeBag)
         
-        viewModel.audioData.asDriver()
-            .drive(onNext: { [weak self] data in
-//                self?.receivedData = data
-                self?.receivedAlarmLabel.text = "You got a message.\nPress the play button."
-                guard let receivedData = data else {
-                    return
+        // For Test
+        viewModel.voiceReceived.asDriver()
+            .drive(onNext: { [weak self] voiceReceived in
+                if voiceReceived {
+                    self?.receivedAlarmLabel.text = "You got a message.\nPress the play button."
                 }
-                self?.viewModel.playReceivedData(receivedData)
-//                self?.playButton.isEnabled = true
             }).disposed(by: disposeBag)
     }
     
