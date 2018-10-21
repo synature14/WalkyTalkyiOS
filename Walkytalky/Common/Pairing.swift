@@ -9,6 +9,8 @@
 import Foundation
 import AVFoundation
 import MultipeerConnectivity
+import RxSwift
+import RxCocoa
 
 protocol PairingDelegate {
     func connectedDevicesChanged(manager: Pairing, connectedDevices: [String])
@@ -20,12 +22,15 @@ protocol PairingDelegate {
 class Pairing: NSObject, StreamDelegate {
     private let WalkyTalkyServiceType = "walky-talky"
     
-    var delegate: PairingDelegate?
     private let myPeerId = MCPeerID(displayName: UIDevice.current.name)
     private let serviceAdvertiser: MCNearbyServiceAdvertiser
     private let serviceBrowser: MCNearbyServiceBrowser
     
+    let receivedData = BehaviorRelay<Data?>(value: nil)
+    let disposeBag = DisposeBag()
+    
     var outputStream: OutputStream?
+    var delegate: PairingDelegate?
     
     // To create a MCSession on demand
     lazy var session: MCSession = {
@@ -44,55 +49,21 @@ class Pairing: NSObject, StreamDelegate {
             peer: myPeerId,
             serviceType: WalkyTalkyServiceType)
         super.init()
-        serviceAdvertiser.delegate = self
-        serviceAdvertiser.startAdvertisingPeer()
-        serviceBrowser.delegate = self
-        serviceBrowser.startBrowsingForPeers()
-        // OutputStream 초기화
-        outputStream?.schedule(in: RunLoop.main, forMode: .default)
-        outputStream?.delegate = self
-        outputStream?.open()
+        setupMCService()
+        setupOutstream()
+        bindReceivedData()
     }
     
-    public func startCaptureOutput() {
-//        captureSession.startRunning()
+    private func sendReceivedDataToConnectedDevices(_ data: Data) {
+        guard session.connectedPeers.count > 0 else {
+            return
+        }
+        do {
+            try session.send(data, toPeers: session.connectedPeers, with: .reliable)
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
-    
-    public func endCaptureOutput() {
-//        captureSession.stopRunning()
-    }
-    
-//    private func sendAvailableBytes(sampleBuffer: CMSampleBuffer) {
-//
-//        if session.connectedPeers.count > 0 {
-//            CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(
-//                sampleBuffer,
-//                bufferListSizeNeededOut: nil,
-//                bufferListOut: &audioBufferList,
-//                bufferListSize: MemoryLayout<AudioBufferList>.size,
-//                blockBufferAllocator: nil,
-//                blockBufferMemoryAllocator: nil,
-//                flags: 0,
-//                blockBufferOut: &blockBuffer)
-//
-//            let buffers = UnsafeBufferPointer<AudioBuffer>(
-//                start: &audioBufferList.mBuffers,
-//                count: Int(audioBufferList.mNumberBuffers))
-//
-//            for buffer in buffers {
-//                guard let framedBuffer = buffer.mData?.assumingMemoryBound(to: UInt8.self) else {
-//                    print("buffer nil")
-//                    return
-//                }
-//                do {
-//                    try session.send(Data(bytes: framedBuffer, count: Int(buffer.mDataByteSize)), toPeers: session.connectedPeers, with: .reliable)
-//                } catch {
-//                    print("Fail to send")
-//                }
-//            }
-//            self.delegate?.isAbleToConnect(bool: true)
-//        }
-//    }
 
     deinit {
         serviceAdvertiser.stopAdvertisingPeer()
@@ -118,8 +89,7 @@ extension Pairing: MCNearbyServiceBrowserDelegate {
     }
     
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
-        print("Found peer! : \(peerID)")
-        print("invitePeer: \(peerID)")
+        print("Found peer and invite peer : \(peerID)")
         browser.invitePeer(peerID, to: self.session, withContext: nil, timeout: 10)
         self.delegate?.isAbleToConnect(bool: true)
     }
@@ -152,5 +122,29 @@ extension Pairing: MCSessionDelegate {
     
     func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
         print("- didFinishReceivingResourceWithName")
+    }
+}
+
+extension Pairing {
+    private func bindReceivedData() {
+        receivedData.asObservable().filterOptional()
+            .subscribe(onNext: { [weak self] receivedData in
+                self?.sendReceivedDataToConnectedDevices(receivedData)
+            }).disposed(by: disposeBag)
+    }
+}
+
+extension Pairing {
+    private func setupOutstream() {
+        outputStream?.schedule(in: RunLoop.main, forMode: .default)
+        outputStream?.delegate = self
+        outputStream?.open()
+    }
+    
+    private func setupMCService() {
+        serviceAdvertiser.delegate = self
+        serviceAdvertiser.startAdvertisingPeer()
+        serviceBrowser.delegate = self
+        serviceBrowser.startBrowsingForPeers()
     }
 }
