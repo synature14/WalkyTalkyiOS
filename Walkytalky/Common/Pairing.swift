@@ -15,7 +15,6 @@ import RxCocoa
 protocol PairingDelegate {
     func connectedDevicesChanged(manager: Pairing, connectedDevices: [String])
     func isAbleToConnect(bool: Bool)
-    func playRecord(manager: Pairing, audioData: Data)
 }
 
 
@@ -26,7 +25,9 @@ class Pairing: NSObject, StreamDelegate {
     private let serviceAdvertiser: MCNearbyServiceAdvertiser
     private let serviceBrowser: MCNearbyServiceBrowser
     
-    let dataToTransfer = BehaviorRelay<Data?>(value: nil)
+    let dataToTransfer = PublishSubject<Data>()
+    let receivedData = PublishSubject<Data>()
+    
     let disposeBag = DisposeBag()
     
     var outputStream: OutputStream?
@@ -107,9 +108,9 @@ extension Pairing: MCSessionDelegate {
             session.connectedPeers.map{$0.displayName})
     }
     
+    // 다른 디바이스에서 데이터를 전송받은 경우 아래 호출 됨
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        print("\n- didReceiveData")
-        self.delegate?.playRecord(manager: self, audioData: data)
+        receivedData.onNext(data)
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
@@ -128,7 +129,6 @@ extension Pairing: MCSessionDelegate {
 extension Pairing {
     private func bindDataToTransfer() {
         dataToTransfer.asObservable()
-            .filterOptional()
             .subscribe(onNext: { [weak self] receivedData in
                 self?.sendReceivedDataToConnectedDevices(receivedData)
             }).disposed(by: disposeBag)
