@@ -33,122 +33,71 @@ class Pairing: NSObject, StreamDelegate {
         session.delegate = self
         return session
     }()
-    
-    let captureSession = AVCaptureSession()
-    let settings = [
-        AVFormatIDKey: kAudioFormatMPEG4AAC,
-        AVNumberOfChannelsKey : 1,
-        AVSampleRateKey : 44100
-    ]
-    let queue = DispatchQueue(label: "AudioSessionQueue", attributes: [])
-    let captureDevice = AVCaptureDevice.default(for: AVMediaType.audio)
-    var audioInput: AVCaptureDeviceInput?
-    var audioOutput: AVCaptureAudioDataOutput?
-    
-    var audioBufferList = AudioBufferList()
-    var blockBuffer: CMBlockBuffer?
 
     override init() {
-        self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerId, discoveryInfo: nil, serviceType: WalkyTalkyServiceType)
-        self.serviceBrowser = MCNearbyServiceBrowser(peer: myPeerId, serviceType: WalkyTalkyServiceType)
+        // MCService 초기화
+        serviceAdvertiser = MCNearbyServiceAdvertiser(
+            peer: myPeerId,
+            discoveryInfo: nil,
+            serviceType: WalkyTalkyServiceType)
+        serviceBrowser = MCNearbyServiceBrowser(
+            peer: myPeerId,
+            serviceType: WalkyTalkyServiceType)
         super.init()
-        
-        guard let captureDevice = captureDevice else {
-            return
-        }
-
-        do {
-            try captureDevice.lockForConfiguration()
-            audioInput = try AVCaptureDeviceInput(device: captureDevice)
-            captureDevice.unlockForConfiguration()
-            audioOutput = AVCaptureAudioDataOutput()
-            audioOutput?.setSampleBufferDelegate(self, queue: queue)
-        } catch {
-            print("Capture devices could not be set")
-            print(error.localizedDescription)
-        }
-        
-        guard let audioInput = audioInput, let audioOutput = audioOutput else {
-            return
-        }
-       
-        captureSession.beginConfiguration()
-        
-        if captureSession.canAddInput(audioInput) {
-            captureSession.addInput(audioInput)
-        } else {
-            print("** cannot add input")
-        }
-        
-        if captureSession.canAddOutput(audioOutput) {
-            captureSession.addOutput(audioOutput)
-        } else {
-            print("** cannot add output")
-        }
-        captureSession.commitConfiguration()
-        
         serviceAdvertiser.delegate = self
         serviceAdvertiser.startAdvertisingPeer()
-        
         serviceBrowser.delegate = self
         serviceBrowser.startBrowsingForPeers()
-
+        // OutputStream 초기화
         outputStream?.schedule(in: RunLoop.main, forMode: .default)
         outputStream?.delegate = self
         outputStream?.open()
     }
     
     public func startCaptureOutput() {
-        captureSession.startRunning()
+//        captureSession.startRunning()
     }
     
     public func endCaptureOutput() {
-        captureSession.stopRunning()
+//        captureSession.stopRunning()
     }
     
-    private func sendAvailableBytes(sampleBuffer: CMSampleBuffer) {
-        if session.connectedPeers.count > 0 {
-            CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(
-                sampleBuffer,
-                bufferListSizeNeededOut: nil,
-                bufferListOut: &audioBufferList,
-                bufferListSize: MemoryLayout<AudioBufferList>.size,
-                blockBufferAllocator: nil,
-                blockBufferMemoryAllocator: nil,
-                flags: 0,
-                blockBufferOut: &blockBuffer)
-            
-            let buffers = UnsafeBufferPointer<AudioBuffer>(
-                start: &audioBufferList.mBuffers,
-                count: Int(audioBufferList.mNumberBuffers))
-            
-            for buffer in buffers {
-                guard let framedBuffer = buffer.mData?.assumingMemoryBound(to: UInt8.self) else {
-                    print("buffer nil")
-                    return
-                }
-                do {
-                    try session.send(Data(bytes: framedBuffer, count: Int(buffer.mDataByteSize)), toPeers: session.connectedPeers, with: .reliable)
-                } catch {
-                    print("Fail to send")
-                }
-            }
-            self.delegate?.isAbleToConnect(bool: true)
-        }
-    }
+//    private func sendAvailableBytes(sampleBuffer: CMSampleBuffer) {
+//
+//        if session.connectedPeers.count > 0 {
+//            CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(
+//                sampleBuffer,
+//                bufferListSizeNeededOut: nil,
+//                bufferListOut: &audioBufferList,
+//                bufferListSize: MemoryLayout<AudioBufferList>.size,
+//                blockBufferAllocator: nil,
+//                blockBufferMemoryAllocator: nil,
+//                flags: 0,
+//                blockBufferOut: &blockBuffer)
+//
+//            let buffers = UnsafeBufferPointer<AudioBuffer>(
+//                start: &audioBufferList.mBuffers,
+//                count: Int(audioBufferList.mNumberBuffers))
+//
+//            for buffer in buffers {
+//                guard let framedBuffer = buffer.mData?.assumingMemoryBound(to: UInt8.self) else {
+//                    print("buffer nil")
+//                    return
+//                }
+//                do {
+//                    try session.send(Data(bytes: framedBuffer, count: Int(buffer.mDataByteSize)), toPeers: session.connectedPeers, with: .reliable)
+//                } catch {
+//                    print("Fail to send")
+//                }
+//            }
+//            self.delegate?.isAbleToConnect(bool: true)
+//        }
+//    }
 
     deinit {
         serviceAdvertiser.stopAdvertisingPeer()
         serviceBrowser.stopBrowsingForPeers()
         outputStream?.close()
-    }
-}
-
-
-extension Pairing: AVCaptureAudioDataOutputSampleBufferDelegate {
-    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        print("** Audio data Sending..!!")
-        sendAvailableBytes(sampleBuffer: sampleBuffer)
     }
 }
 
