@@ -20,18 +20,21 @@ class MainViewModel: NSObject, AVAudioRecorderDelegate {
         case back
     }
     
-    var numberOfRecords: Int = 0
-    var recordingSession: AVAudioSession!
-    var audioRecorder: AVAudioRecorder!
-    var audioPlayer: AVAudioPlayer!
+    let viewAction = PublishSubject<ViewAction>()
     
     let walkyTalkyService = Pairing()
-    let viewAction = PublishSubject<ViewAction>()
+    let voiceRecorder = VoiceRecorder()
     
     let connectedDeviceNames = Variable<[String]>([])
     let otherDeviceConnected = Variable<Bool>(false)
+    
+    // 지워질 프로퍼티
     let audioData = Variable<Data?>(nil)
     var chunkData: Data = Data()
+    var recordingSession: AVAudioSession!
+    var audioRecorder: AVAudioRecorder!
+    var audioPlayer: AVAudioPlayer!
+    var numberOfRecords: Int = 0
     
     override init() {
         super.init()
@@ -66,11 +69,11 @@ extension MainViewModel: PairingDelegate {
 
 extension MainViewModel {
     public func startToRecord() {
-        walkyTalkyService.startCaptureOutput()
+        voiceRecorder.startRecording()
     }
     
     public func finishRecord() {
-        walkyTalkyService.endCaptureOutput()
+        voiceRecorder.stopRecording()
     }
     
     public func playReceivedData(_ receivedData: Data) {
