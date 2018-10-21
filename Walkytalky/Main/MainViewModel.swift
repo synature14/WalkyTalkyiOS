@@ -42,19 +42,26 @@ class MainViewModel: NSObject, AVAudioRecorderDelegate {
     func requestShowTuneinChannel() {
         viewAction.onNext(.showTuneInChannel)
     }
-    
-    private func setupAudio() {
-        recordingSession = AVAudioSession.sharedInstance()
-        
-        // 녹음 기록 불러와서 저장할 제목
-        if let number: Int = UserDefaults.standard.object(forKey: "walkyTalky") as? Int {
-            numberOfRecords = number
-        }
-        AVAudioSession.sharedInstance().requestRecordPermission({ hasPermission in
-            if hasPermission { print("Accepted!") }
-        })
+}
+
+extension MainViewModel: PairingDelegate {
+    func connectedDevicesChanged(manager: Pairing, connectedDevices: [String]) {
+        self.connectedDeviceNames.value = connectedDevices
     }
     
+    func isAbleToConnect(bool: Bool) {
+        self.otherDeviceConnected.value = bool
+    }
+    
+    func playRecord(manager: Pairing, audioData: Data) {
+        if chunkData.count > 1024 {
+            print("\n\n PlayRecord : chunkData.count = \(chunkData.count)")
+            self.audioData.value = audioData
+            self.chunkData.removeAll()
+        } else {
+            self.chunkData.append(audioData)
+        }
+    }
 }
 
 extension MainViewModel {
@@ -76,22 +83,16 @@ extension MainViewModel {
     }
 }
 
-extension MainViewModel: PairingDelegate {
-    func connectedDevicesChanged(manager: Pairing, connectedDevices: [String]) {
-        self.connectedDeviceNames.value = connectedDevices
-    }
-    
-    func isAbleToConnect(bool: Bool) {
-        self.otherDeviceConnected.value = bool
-    }
-    
-    func playRecord(manager: Pairing, audioData: Data) {
-        if chunkData.count > 1024 {
-            print("\n\n PlayRecord : chunkData.count = \(chunkData.count)")
-            self.audioData.value = audioData
-            self.chunkData.removeAll()
-        } else {
-            self.chunkData.append(audioData)
+extension MainViewModel {
+    private func setupAudio() {
+        recordingSession = AVAudioSession.sharedInstance()
+        
+        // 녹음 기록 불러와서 저장할 제목
+        if let number: Int = UserDefaults.standard.object(forKey: "walkyTalky") as? Int {
+            numberOfRecords = number
         }
+        AVAudioSession.sharedInstance().requestRecordPermission({ hasPermission in
+            if hasPermission { print("Accepted!") }
+        })
     }
 }
