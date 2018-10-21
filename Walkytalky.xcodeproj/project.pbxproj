@@ -22,6 +22,7 @@
 		FC16B79221709112007FC4BC /* Root.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC16B79121709112007FC4BC /* Root.storyboard */; };
 		FC16B79421709122007FC4BC /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC16B79321709122007FC4BC /* RootViewController.swift */; };
 		FC4C10B0217CBBB6007928BF /* Data+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4C10AF217CBBB6007928BF /* Data+Extension.swift */; };
+		FC4C10B2217CBC18007928BF /* VoiceRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4C10B1217CBC18007928BF /* VoiceRecorder.swift */; };
 		FCFCF9F12170991C00CF5FBB /* TuneInChannel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FCFCF9F02170991C00CF5FBB /* TuneInChannel.storyboard */; };
 		FCFCF9F32170A74500CF5FBB /* TuneInChannelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFCF9F22170A74500CF5FBB /* TuneInChannelViewModel.swift */; };
 		FCFCF9F72172323A00CF5FBB /* TuneinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFCF9F62172323A00CF5FBB /* TuneinView.swift */; };
@@ -46,6 +47,7 @@
 		FC16B79121709112007FC4BC /* Root.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Root.storyboard; sourceTree = "<group>"; };
 		FC16B79321709122007FC4BC /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		FC4C10AF217CBBB6007928BF /* Data+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extension.swift"; sourceTree = "<group>"; };
+		FC4C10B1217CBC18007928BF /* VoiceRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecorder.swift; sourceTree = "<group>"; };
 		FCFCF9F02170991C00CF5FBB /* TuneInChannel.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TuneInChannel.storyboard; sourceTree = "<group>"; };
 		FCFCF9F22170A74500CF5FBB /* TuneInChannelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TuneInChannelViewModel.swift; sourceTree = "<group>"; };
 		FCFCF9F62172323A00CF5FBB /* TuneinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TuneinView.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				98A7A0182167351100CDFD8D /* CircleView.swift */,
 				984CD2C1215B7EAC00D2C417 /* Bindable.swift */,
 				FCFCF9F8217239CD00CF5FBB /* CoverPartTransitionAnimator.swift */,
+				FC4C10B1217CBC18007928BF /* VoiceRecorder.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 				984CD2C2215B7EAC00D2C417 /* Bindable.swift in Sources */,
 				984CD2C0215B7E0600D2C417 /* MainViewModel.swift in Sources */,
 				FCFCF9F32170A74500CF5FBB /* TuneInChannelViewModel.swift in Sources */,
+				FC4C10B2217CBC18007928BF /* VoiceRecorder.swift in Sources */,
 				98A4F16B216B96A300892BBB /* Pairing.swift in Sources */,
 				98A7A01C2167388100CDFD8D /* TuneInChannelViewController.swift in Sources */,
 				FCFCF9F72172323A00CF5FBB /* TuneinView.swift in Sources */,
