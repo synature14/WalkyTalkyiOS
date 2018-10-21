@@ -21,6 +21,7 @@
 		FC16B7902170908B007FC4BC /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC16B78F2170908B007FC4BC /* UIView+Extension.swift */; };
 		FC16B79221709112007FC4BC /* Root.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC16B79121709112007FC4BC /* Root.storyboard */; };
 		FC16B79421709122007FC4BC /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC16B79321709122007FC4BC /* RootViewController.swift */; };
+		FC4C10B0217CBBB6007928BF /* Data+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4C10AF217CBBB6007928BF /* Data+Extension.swift */; };
 		FCFCF9F12170991C00CF5FBB /* TuneInChannel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FCFCF9F02170991C00CF5FBB /* TuneInChannel.storyboard */; };
 		FCFCF9F32170A74500CF5FBB /* TuneInChannelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFCF9F22170A74500CF5FBB /* TuneInChannelViewModel.swift */; };
 		FCFCF9F72172323A00CF5FBB /* TuneinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFCF9F62172323A00CF5FBB /* TuneinView.swift */; };
@@ -44,6 +45,7 @@
 		FC16B78F2170908B007FC4BC /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		FC16B79121709112007FC4BC /* Root.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Root.storyboard; sourceTree = "<group>"; };
 		FC16B79321709122007FC4BC /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		FC4C10AF217CBBB6007928BF /* Data+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extension.swift"; sourceTree = "<group>"; };
 		FCFCF9F02170991C00CF5FBB /* TuneInChannel.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TuneInChannel.storyboard; sourceTree = "<group>"; };
 		FCFCF9F22170A74500CF5FBB /* TuneInChannelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TuneInChannelViewModel.swift; sourceTree = "<group>"; };
 		FCFCF9F62172323A00CF5FBB /* TuneinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TuneinView.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				FC16B78F2170908B007FC4BC /* UIView+Extension.swift */,
+				FC4C10AF217CBBB6007928BF /* Data+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -250,6 +253,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC4C10B0217CBBB6007928BF /* Data+Extension.swift in Sources */,
 				FCFCF9F9217239CD00CF5FBB /* CoverPartTransitionAnimator.swift in Sources */,
 				98A7A0192167351100CDFD8D /* CircleView.swift in Sources */,
 				984CD2AB215B30E000D2C417 /* MainViewController.swift in Sources */,

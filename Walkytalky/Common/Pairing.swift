@@ -68,7 +68,9 @@ class Pairing: NSObject, StreamDelegate {
             print(error.localizedDescription)
         }
         
-        guard let audioInput = audioInput, let audioOutput = audioOutput else { return }
+        guard let audioInput = audioInput, let audioOutput = audioOutput else {
+            return
+        }
        
         captureSession.beginConfiguration()
         
