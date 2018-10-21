@@ -27,6 +27,7 @@ class MainViewModel: NSObject, AVAudioRecorderDelegate {
     
     let connectedDeviceNames = Variable<[String]>([])
     let otherDeviceConnected = Variable<Bool>(false)
+    let disposeBag = DisposeBag()
     
     // 지워질 프로퍼티
     let audioData = Variable<Data?>(nil)
@@ -40,6 +41,7 @@ class MainViewModel: NSObject, AVAudioRecorderDelegate {
         super.init()
         walkyTalkyService.delegate = self
         setupAudio()
+        bindRecordedVoiceToPairing()
     }
     
     func requestShowTuneinChannel() {
@@ -97,5 +99,13 @@ extension MainViewModel {
         AVAudioSession.sharedInstance().requestRecordPermission({ hasPermission in
             if hasPermission { print("Accepted!") }
         })
+    }
+}
+
+extension MainViewModel {
+    private func bindRecordedVoiceToPairing() {
+        voiceRecorder.onVoiceCaptured
+            .bind(to: walkyTalkyService.receivedData)
+            .disposed(by: disposeBag)
     }
 }
