@@ -30,8 +30,6 @@ class Pairing: NSObject, StreamDelegate {
     // To create a MCSession on demand
     lazy var session: MCSession = {
         let session = MCSession(peer: self.myPeerId, securityIdentity: nil, encryptionPreference: .required)
-//        Stream.getStreamsToHost(withName: "record", port: 1,
-//                                inputStream: &inputStream, outputStream: &outputStream)
         session.delegate = self
         return session
     }()
@@ -53,16 +51,18 @@ class Pairing: NSObject, StreamDelegate {
     override init() {
         self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerId, discoveryInfo: nil, serviceType: WalkyTalkyServiceType)
         self.serviceBrowser = MCNearbyServiceBrowser(peer: myPeerId, serviceType: WalkyTalkyServiceType)
-       
         super.init()
+        
+        guard let captureDevice = captureDevice else {
+            return
+        }
 
         do {
-            try captureDevice?.lockForConfiguration()
-            audioInput = try AVCaptureDeviceInput(device: captureDevice!)
-            captureDevice?.unlockForConfiguration()
+            try captureDevice.lockForConfiguration()
+            audioInput = try AVCaptureDeviceInput(device: captureDevice)
+            captureDevice.unlockForConfiguration()
             audioOutput = AVCaptureAudioDataOutput()
             audioOutput?.setSampleBufferDelegate(self, queue: queue)
-//            audioOutput?.audioSettings = settings
         } catch {
             print("Capture devices could not be set")
             print(error.localizedDescription)

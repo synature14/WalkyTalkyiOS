@@ -29,7 +29,7 @@ class MainViewModel: NSObject, AVAudioRecorderDelegate {
     let viewAction = PublishSubject<ViewAction>()
     
     let connectedDeviceNames = Variable<[String]>([])
-    let isAbleToRecord = Variable<Bool>(false)
+    let otherDeviceConnected = Variable<Bool>(false)
     let audioData = Variable<Data?>(nil)
     var chunkData: Data = Data()
     
@@ -82,7 +82,7 @@ extension MainViewModel: PairingDelegate {
     }
     
     func isAbleToConnect(bool: Bool) {
-        self.isAbleToRecord.value = bool
+        self.otherDeviceConnected.value = bool
     }
     
     func playRecord(manager: Pairing, audioData: Data) {

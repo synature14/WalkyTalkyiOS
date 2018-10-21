@@ -117,15 +117,16 @@ extension MainViewController {
             })
             .disposed(by: disposeBag)
         
-        viewModel.isAbleToRecord.asDriver()
-            .drive(onNext: { [weak self] isEnable in
-                self?.recordButton.isEnabled = isEnable
+        viewModel.otherDeviceConnected.asDriver()
+            .do(onNext: { [weak self] isEnable in
                 if isEnable {
                     self?.recordButtonIndicatorView.startAnimating()
                 } else {
                     print("\n** Unable to Connect other devices")
                 }
-            }).disposed(by: disposeBag)
+            })
+            .drive(self.recordButton.rx.isEnabled)
+            .disposed(by: disposeBag)
         
         viewModel.audioData.asDriver()
             .drive(onNext: { [weak self] data in
