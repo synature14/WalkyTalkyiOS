@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9354975F2180AC5500BF56A0 /* VoicePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9354975E2180AC5500BF56A0 /* VoicePlayer.swift */; };
+		935497612180ACD500BF56A0 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935497602180ACD500BF56A0 /* Permissions.swift */; };
 		984CD2A9215B30E000D2C417 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984CD2A8215B30E000D2C417 /* AppDelegate.swift */; };
 		984CD2AB215B30E000D2C417 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984CD2AA215B30E000D2C417 /* MainViewController.swift */; };
 		984CD2AE215B30E000D2C417 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 984CD2AC215B30E000D2C417 /* Main.storyboard */; };
@@ -31,6 +33,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9354975E2180AC5500BF56A0 /* VoicePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoicePlayer.swift; sourceTree = "<group>"; };
+		935497602180ACD500BF56A0 /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
 		984CD2A5215B30E000D2C417 /* Walkytalky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Walkytalky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		984CD2A8215B30E000D2C417 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		984CD2AA215B30E000D2C417 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -129,6 +133,8 @@
 				984CD2C1215B7EAC00D2C417 /* Bindable.swift */,
 				FCFCF9F8217239CD00CF5FBB /* CoverPartTransitionAnimator.swift */,
 				FC4C10B1217CBC18007928BF /* VoiceRecorder.swift */,
+				9354975E2180AC5500BF56A0 /* VoicePlayer.swift */,
+				935497602180ACD500BF56A0 /* Permissions.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -273,7 +279,9 @@
 				98A4F16B216B96A300892BBB /* Pairing.swift in Sources */,
 				FCA246E7217CDBAC000713AF /* Observable+Extension.swift in Sources */,
 				98A7A01C2167388100CDFD8D /* TuneInChannelViewController.swift in Sources */,
+				935497612180ACD500BF56A0 /* Permissions.swift in Sources */,
 				FCFCF9F72172323A00CF5FBB /* TuneinView.swift in Sources */,
+				9354975F2180AC5500BF56A0 /* VoicePlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

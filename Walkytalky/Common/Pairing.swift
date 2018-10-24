@@ -29,8 +29,6 @@ class Pairing: NSObject, StreamDelegate {
     let receivedData = PublishSubject<Data>()
     
     let disposeBag = DisposeBag()
-    
-    var outputStream: OutputStream?
     var delegate: PairingDelegate?
     
     // To create a MCSession on demand
@@ -69,7 +67,6 @@ class Pairing: NSObject, StreamDelegate {
     deinit {
         serviceAdvertiser.stopAdvertisingPeer()
         serviceBrowser.stopBrowsingForPeers()
-        outputStream?.close()
     }
 }
 
@@ -136,12 +133,6 @@ extension Pairing {
 }
 
 extension Pairing {
-    private func setupOutstream() {
-        outputStream?.schedule(in: RunLoop.main, forMode: .default)
-        outputStream?.delegate = self
-        outputStream?.open()
-    }
-    
     private func setupMCService() {
         serviceAdvertiser.delegate = self
         serviceAdvertiser.startAdvertisingPeer()
