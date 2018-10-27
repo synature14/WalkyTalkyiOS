@@ -15,7 +15,7 @@ extension Data {
         self.init(bytes: audioBuffer.mData!, count: Int(audioBuffer.mDataByteSize))
     }
     
-    func makePCMBuffer(format: AVAudioFormat) -> AVAudioPCMBuffer? {
+    func convertToPCMBuffer(format: AVAudioFormat) -> AVAudioPCMBuffer? {
         let streamDesc = format.streamDescription.pointee
         let frameCapacity = UInt32(count) / streamDesc.mBytesPerFrame
         guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frameCapacity) else { return nil }

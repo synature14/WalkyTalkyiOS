@@ -24,6 +24,7 @@ class MainViewModel: NSObject, AVAudioRecorderDelegate {
     
     let walkyTalkyService = Pairing()
     let voiceRecorder = VoiceRecorder()
+    let voicePlayer = VoicePlayer()
     
     let connectedDeviceNames = Variable<[String]>([])
     let otherDeviceConnected = Variable<Bool>(false)
@@ -36,6 +37,7 @@ class MainViewModel: NSObject, AVAudioRecorderDelegate {
         setupAudio()
         bindRecordedVoiceToPairing()
         bindReceivedVoiceFromPairing()
+        bindVoicePlayer()
     }
     
     func requestShowTuneinChannel() {
@@ -86,6 +88,12 @@ extension MainViewModel {
         walkyTalkyService.receivedData
             .map { _ in true }
             .bind(to: voiceReceived)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindVoicePlayer() {
+        walkyTalkyService.receivedData
+            .bind(to: self.voicePlayer.receivedData)
             .disposed(by: disposeBag)
     }
 }

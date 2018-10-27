@@ -49,7 +49,6 @@ class Pairing: NSObject, StreamDelegate {
             serviceType: WalkyTalkyServiceType)
         super.init()
         setupMCService()
-        setupOutstream()
         bindDataToTransfer()
     }
     

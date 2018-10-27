@@ -20,7 +20,7 @@ class MainViewController: UIViewController, Bindable {
     @IBOutlet weak var connectionLabel: UILabel!
     @IBOutlet weak var receivedAlarmLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
-    
+
     var viewModel: MainViewModel!
     var receivedData: Data?
     let disposeBag = DisposeBag()
