@@ -146,6 +146,7 @@ extension MainViewController {
             }
             .map { $0.dropFirst() }
             .map { String($0) }
+            .do(onNext: { print("connected: \($0)") })
             .bind(to: connectionLabel.rx.text)
             .disposed(by: disposeBag)
     }

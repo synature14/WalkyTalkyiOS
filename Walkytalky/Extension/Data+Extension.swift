@@ -29,4 +29,19 @@ extension Data {
         
         return buffer
     }
+    
+    func toPCMBuffer() -> AVAudioPCMBuffer? {
+        guard
+            let audioFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 8000, channels: 1, interleaved: false),
+            let audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFormat, frameCapacity: UInt32(self.count) / 2) else {
+                return nil
+        }
+        audioBuffer.frameLength = audioBuffer.frameCapacity
+        for i in 0 ..< self.count / 2 {
+            // transform two bytes into a float (-1.0 - 1.0), required by the audio buffer
+            audioBuffer.floatChannelData?.pointee[i] = Float(Int16(self[i*2+1]) << 8 | Int16(self[i*2]))/Float(INT16_MAX)
+        }
+        
+        return audioBuffer
+    }
 }

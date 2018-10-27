@@ -80,12 +80,18 @@ extension MainViewModel {
 extension MainViewModel {
     private func bindRecordedVoiceToPairing() {
         voiceRecorder.onVoiceCaptured
+            .do(onNext: {
+                print("voice recorded \($0.count)")
+            })
             .bind(to: walkyTalkyService.dataToTransfer)
             .disposed(by: disposeBag)
     }
     
     private func bindReceivedVoiceFromPairing() {
         walkyTalkyService.receivedData
+            .do(onNext: {
+                print("recorded voice catched \($0.count)")
+            })
             .map { _ in true }
             .bind(to: voiceReceived)
             .disposed(by: disposeBag)
@@ -93,6 +99,9 @@ extension MainViewModel {
     
     private func bindVoicePlayer() {
         walkyTalkyService.receivedData
+            .do(onNext: {
+                print("play voice \($0.count)")
+            })
             .bind(to: self.voicePlayer.receivedData)
             .disposed(by: disposeBag)
     }
