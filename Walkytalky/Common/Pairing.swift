@@ -33,7 +33,7 @@ class Pairing: NSObject, StreamDelegate {
     
     // To create a MCSession on demand
     lazy var session: MCSession = {
-        let session = MCSession(peer: self.myPeerId, securityIdentity: nil, encryptionPreference: .required)
+        let session = MCSession(peer: self.myPeerId, securityIdentity: nil, encryptionPreference: .none)
         session.delegate = self
         return session
     }()
