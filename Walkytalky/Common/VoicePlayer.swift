@@ -13,14 +13,12 @@ import RxSwift
 
 class VoicePlayer {
     
-    let receivedData = PublishSubject<Data>()
+    let receivedData = PublishSubject<AudioBlock>()
     let disposeBag = DisposeBag()
     
     private lazy var audioEngine: AVAudioEngine = {
         let audioEngine = AVAudioEngine()
-//        audioEngine.attach(playerNode)
-//        audioEngine.connect(playerNode, to: audioEngine.mainMixerNode, format: nil)
-//        audioEngine.prepare()
+        audioEngine.attach(playerNode)
 //        do {
 //            try audioEngine.start()
 //        } catch {
@@ -36,12 +34,16 @@ class VoicePlayer {
     
     private func bindReceivedData() {
         receivedData
-            .map { $0.toPCMBuffer() }
+            .do(onNext: { audioBlock in
+                self.audioEngine.connect(
+                    self.playerNode,
+                    to: self.audioEngine.mainMixerNode,
+                    format: AVAudioFormat(settings: audioBlock.format))
+            })
+            .map { $0.audioData.toPCMBuffer() }
             .filterOptional()
             .do(onNext: {
                 if !self.playerNode.isPlaying {
-                    self.audioEngine.attach(self.playerNode)
-                    self.audioEngine.connect(self.playerNode, to: self.audioEngine.mainMixerNode, format: $0.format)
                     self.audioEngine.prepare()
                     try? self.audioEngine.start()
                     self.playerNode.play()

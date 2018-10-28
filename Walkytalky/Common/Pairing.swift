@@ -26,7 +26,7 @@ class Pairing: NSObject, StreamDelegate {
     private let serviceBrowser: MCNearbyServiceBrowser
     
     let dataToTransfer = PublishSubject<AudioBlock>()
-    let receivedData = PublishSubject<Data>()
+    let receivedData = PublishSubject<AudioBlock>()
     
     let disposeBag = DisposeBag()
     var delegate: PairingDelegate?
@@ -106,7 +106,10 @@ extension Pairing: MCSessionDelegate {
     
     // 다른 디바이스에서 데이터를 전송받은 경우 아래 호출 됨
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        receivedData.onNext(data)
+        guard let audioBlock = try? JSONDecoder().decode(AudioBlock.self, from: data) else {
+            return
+        }
+        receivedData.onNext(audioBlock)
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {

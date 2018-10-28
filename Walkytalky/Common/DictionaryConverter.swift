@@ -36,4 +36,14 @@ class DictionaryConverter {
         }
         return dictionary
     }
+    
+    static func toJsonString(from dictionary: [String: Any]) -> String? {
+        guard
+            JSONSerialization.isValidJSONObject(dictionary),
+            let jsonData = try? JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted),
+            let json = String(data: jsonData, encoding: .utf8) else {
+                return nil
+        }
+        return json
+    }
 }

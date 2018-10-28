@@ -10,6 +10,10 @@ import Foundation
 
 struct AudioBlock {
     
+    enum Errors: Error {
+        case convertJsonError
+    }
+    
     enum CodingKeys: String, CodingKey {
         case format = "format"
         case audioData = "audioData:"
@@ -22,7 +26,9 @@ struct AudioBlock {
 extension AudioBlock: Encodable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        let formatJsonString = format.toJsonString() ?? ""
+        guard let formatJsonString = DictionaryConverter.toJsonString(from: format) else {
+            throw Errors.convertJsonError
+        }
         try container.encode(formatJsonString, forKey: .format)
         try container.encode(audioData, forKey: .audioData)
     }
