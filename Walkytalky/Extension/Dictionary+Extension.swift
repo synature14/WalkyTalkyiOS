@@ -9,7 +9,7 @@
 import Foundation
 import RxSwift
 
-extension Dictionary {
+extension Dictionary where Key: Hashable, Value: Any {
     func toJsonString() -> Observable<String> {
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: self, options: .prettyPrinted)
@@ -27,23 +27,5 @@ extension Dictionary {
                 return nil
         }
         return json
-    }
-    
-    static func parseFrom(data: Data) -> Observable<[String: Any]> {
-        do {
-            let dictionary = try JSONSerialization.jsonObject(
-                with: data,
-                options: .allowFragments) as? [String: Any] ?? [:]
-            return .just(dictionary)
-        } catch let error {
-            return .error(error)
-        }
-    }
-    
-    static func parseFrom(data: Data) -> [String: Any]? {
-        guard let dictionary = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
-            return nil
-        }
-        return dictionary
     }
 }

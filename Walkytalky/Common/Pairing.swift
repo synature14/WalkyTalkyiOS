@@ -25,7 +25,7 @@ class Pairing: NSObject, StreamDelegate {
     private let serviceAdvertiser: MCNearbyServiceAdvertiser
     private let serviceBrowser: MCNearbyServiceBrowser
     
-    let dataToTransfer = PublishSubject<Data>()
+    let dataToTransfer = PublishSubject<AudioBlock>()
     let receivedData = PublishSubject<Data>()
     
     let disposeBag = DisposeBag()
@@ -125,8 +125,9 @@ extension Pairing: MCSessionDelegate {
 extension Pairing {
     private func bindDataToTransfer() {
         dataToTransfer.asObservable()
-            .subscribe(onNext: { [weak self] receivedData in
-                self?.sendReceivedDataToConnectedDevices(receivedData)
+            .map { try JSONEncoder().encode($0) }
+            .subscribe(onNext: { [weak self] jsonData in
+                self?.sendReceivedDataToConnectedDevices(jsonData)
             }).disposed(by: disposeBag)
     }
 }

@@ -22,9 +22,18 @@ struct AudioBlock {
 extension AudioBlock: Encodable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try container.encode(<#T##value: Bool##Bool#>, forKey: <#T##AudioBlock.CodingKeys#>)
+        let formatJsonString = format.toJsonString() ?? ""
+        try container.encode(formatJsonString, forKey: .format)
         try container.encode(audioData, forKey: .audioData)
+    }
+}
+
+extension AudioBlock: Decodable {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.audioData = try container.decode(Data.self, forKey: .audioData)
+        let formatJsonString = try container.decode(String.self, forKey: .format)
+        self.format = DictionaryConverter.parseFrom(string: formatJsonString) ?? [:]
     }
 }
 

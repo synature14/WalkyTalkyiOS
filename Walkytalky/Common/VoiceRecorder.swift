@@ -11,14 +11,15 @@ import AVFoundation
 import RxSwift
 
 class VoiceRecorder {
-    let onVoiceCaptured = PublishSubject<Data>()
+    let onVoiceCaptured = PublishSubject<AudioBlock>()
     
     private lazy var audioEngine: AVAudioEngine = {
         let audioEngine = AVAudioEngine()
         let format = audioEngine.inputNode.inputFormat(forBus: 0)
         audioEngine.inputNode.installTap(onBus: 0, bufferSize: 1024, format: format) { [weak self] (buffer, time) in
             let data = Data(buffer: buffer, time: time)
-            self?.onVoiceCaptured.onNext(data)
+            let audioBlock = AudioBlock(format: buffer.format.settings, audioData: data)
+            self?.onVoiceCaptured.onNext(audioBlock)
         }
         return audioEngine
     }()
