@@ -8,11 +8,23 @@
 
 import Foundation
 
-class AudioBlock: Codable {
-    var format: [String: String]
-    var audioData: Data
+struct AudioBlock {
     
-    required init?(coder aDecoder: NSCoder) {
-        self.format = aDecoder.decodeObject(forKey: "format") as? 
+    enum CodingKeys: String, CodingKey {
+        case format = "format"
+        case audioData = "audioData:"
+    }
+    
+    var format: [String: Any]
+    var audioData: Data
+}
+
+extension AudioBlock: Encodable {
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(<#T##value: Bool##Bool#>, forKey: <#T##AudioBlock.CodingKeys#>)
+        try container.encode(audioData, forKey: .audioData)
     }
 }
+
